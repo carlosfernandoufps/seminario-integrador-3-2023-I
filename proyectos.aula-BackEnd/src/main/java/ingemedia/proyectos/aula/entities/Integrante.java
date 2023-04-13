@@ -1,5 +1,6 @@
 package ingemedia.proyectos.aula.entities;
 
+import ingemedia.proyectos.aula.request.IntegranteRequest;
 import ingemedia.proyectos.aula.request.Rol;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -21,13 +22,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="Integrante")
+@Table(name = "Integrante")
 public class Integrante {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     private int codigo;
-    
+
     @NotNull
     @NotBlank
     private String nombre;
@@ -44,4 +45,12 @@ public class Integrante {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Rol rol;
+
+    public Integrante(IntegranteRequest integranteRequest) {
+        this.codigo = integranteRequest.getCodigo();
+        this.nombre = integranteRequest.getNombre();
+        this.apellido = integranteRequest.getApellido();
+        this.correo = integranteRequest.getCorreo();
+        this.rol = integranteRequest.getRol();
+    }
 }
