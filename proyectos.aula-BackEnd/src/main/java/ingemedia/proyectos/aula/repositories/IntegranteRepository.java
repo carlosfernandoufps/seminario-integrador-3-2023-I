@@ -12,4 +12,10 @@ public interface IntegranteRepository extends JpaRepository<Integrante, Integer>
 
   Optional<Integrante> findByCorreo(String correo);
 
+  // eliminar un integrante por codigo
+  void deleteByCodigo(int codigo);
+
+  // consultar un integrante por codigo
+  Optional<Integrante> findByCodigo(int codigo);
+
 }

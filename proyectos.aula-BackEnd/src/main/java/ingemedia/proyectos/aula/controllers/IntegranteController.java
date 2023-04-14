@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ingemedia.proyectos.aula.entities.Integrante;
 import ingemedia.proyectos.aula.request.IntegranteRequest;
+import ingemedia.proyectos.aula.responses.MensajeResponse;
 import ingemedia.proyectos.aula.services.IntegranteService;
 import jakarta.validation.Valid;
 
@@ -41,19 +42,22 @@ public class IntegranteController {
     // Registrar un integrante
     @PostMapping
     public Integrante registrarIntegrante(@RequestBody @Valid IntegranteRequest integrante) {
-        return integranteService.registrarIntegrante(new Integrante(integrante));
+        Integrante integranteNuevo = integranteService.registrarIntegrante(new Integrante(integrante));
+        return integranteNuevo;
     }
 
     // actualizar un integrante
     @PutMapping("/{codigo}")
-    public Integrante actualizarIntegrante(@PathVariable int codigo, @RequestBody @Valid Integrante integrante) {
-        return integranteService.actualizarIntegrante(codigo, integrante);
+    public Integrante actualizarIntegrante(@PathVariable int codigo, @RequestBody @Valid IntegranteRequest integrante) {
+        return integranteService.actualizarIntegrante(codigo, new Integrante(integrante));
     }
 
     // Eliminar un integrante
     @DeleteMapping("/{codigo}")
-    public void eliminarIntegrante(@PathVariable int codigo) {
+    public MensajeResponse eliminarIntegrante(@PathVariable int codigo) {
         integranteService.eliminarIntegrante(codigo);
+
+        return new MensajeResponse("El integrante con el codigo " + codigo + " fue eliminado");
     }
 
 }

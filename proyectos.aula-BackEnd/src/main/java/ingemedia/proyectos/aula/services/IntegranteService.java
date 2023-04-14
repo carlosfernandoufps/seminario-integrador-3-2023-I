@@ -28,7 +28,7 @@ public class IntegranteService {
 
   // optener un integrante por codigo
   public Integrante getIntegrante(int codigo) {
-    Optional<Integrante> integrante = integranteRepository.findById(codigo);
+    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
     if (integrante.isPresent()) {
       return integrante.get();
     } else {
@@ -50,9 +50,9 @@ public class IntegranteService {
 
   // Eliminar un integrante
   public void eliminarIntegrante(int codigo) {
-    Optional<Integrante> integrante = integranteRepository.findById(codigo);
+    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
     if (integrante.isPresent()) {
-      integranteRepository.deleteById(codigo);
+      integranteRepository.deleteByCodigo(codigo);
     } else {
       throw new BadRequestException(new ErrorResponse("El integrante con el codigo " + codigo + " no existe"));
     }
@@ -60,7 +60,7 @@ public class IntegranteService {
 
   // Actualizar un integrante
   public Integrante actualizarIntegrante(int codigo, Integrante integrante) {
-    Optional<Integrante> integranteExistente = integranteRepository.findById(codigo);
+    Optional<Integrante> integranteExistente = integranteRepository.findByCodigo(codigo);
     if (integranteExistente.isPresent()) {
       integrante.setCodigo(codigo);
       return integranteRepository.save(integrante);
