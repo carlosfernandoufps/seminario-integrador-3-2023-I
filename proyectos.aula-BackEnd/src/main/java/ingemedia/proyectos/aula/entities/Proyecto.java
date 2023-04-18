@@ -1,7 +1,10 @@
 package ingemedia.proyectos.aula.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import ingemedia.proyectos.aula.request.ProyectoRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -33,8 +36,25 @@ public class Proyecto {
     @NotBlank
     private String semestre;
 
-    @NotNull
+    @NotNull 
     @NotBlank
     private String descripcion;
+
+    @NotNull 
+    @NotBlank
+    private String link;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "proyecto")
+    private List<IntegranteProyecto> integrantes= new ArrayList<>();
+
+    public Proyecto(ProyectoRequest proyectoRequest)
+    {
+        this.titulo=proyectoRequest.getTitulo();
+        this.fecha=proyectoRequest.getFecha();
+        this.materia=proyectoRequest.getMateria();
+        this.semestre=proyectoRequest.getSemestre();
+        this.descripcion=proyectoRequest.getDescripcion();
+        this.link=proyectoRequest.getLink();
+    }
     
 }

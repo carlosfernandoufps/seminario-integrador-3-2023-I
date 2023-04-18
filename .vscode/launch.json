@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<proyectos.aula>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ingemedia.proyectos.aula.Application",
+            "projectName": "proyectos.aula",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
