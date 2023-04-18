@@ -47,7 +47,7 @@ public class ProyectoController {
         return proyectoService.actualizarProyecto(id, new Integrante(proyecto));
     }
 
-    // Eliminar un integrante
+    // Eliminar un proyecto
     @DeleteMapping("/{id}")
     public MensajeResponse eliminarIntegrante(@PathVariable int codigo) {
         proyectoService.eliminarIntegrante(codigo);
