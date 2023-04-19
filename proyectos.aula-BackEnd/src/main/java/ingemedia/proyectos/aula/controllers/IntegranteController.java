@@ -35,7 +35,7 @@ public class IntegranteController {
 
     // obtener un integrante por codigo
     @GetMapping("/{codigo}")
-    public Integrante getIntegrante(@PathVariable int codigo) {
+    public Integrante getIntegrante(@PathVariable String codigo) {
         return integranteService.getIntegrante(codigo);
     }
 
@@ -48,13 +48,14 @@ public class IntegranteController {
 
     // actualizar un integrante
     @PutMapping("/{codigo}")
-    public Integrante actualizarIntegrante(@PathVariable int codigo, @RequestBody @Valid IntegranteRequest integrante) {
+    public Integrante actualizarIntegrante(@PathVariable String codigo,
+            @RequestBody @Valid IntegranteRequest integrante) {
         return integranteService.actualizarIntegrante(codigo, new Integrante(integrante));
     }
 
     // Eliminar un integrante
     @DeleteMapping("/{codigo}")
-    public MensajeResponse eliminarIntegrante(@PathVariable int codigo) {
+    public MensajeResponse eliminarIntegrante(@PathVariable String codigo) {
         integranteService.eliminarIntegrante(codigo);
 
         return new MensajeResponse("El integrante con el codigo " + codigo + " fue eliminado");

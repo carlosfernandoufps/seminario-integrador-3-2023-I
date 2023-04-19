@@ -4,22 +4,26 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import ingemedia.proyectos.aula.request.ProyectoRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="Proyecto")
+@Table(name = "proyecto")
 public class Proyecto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @NotNull
     @NotBlank
@@ -36,25 +40,31 @@ public class Proyecto {
     @NotBlank
     private String semestre;
 
-    @NotNull 
+    @NotNull
     @NotBlank
     private String descripcion;
 
-    @NotNull 
+    @NotNull
     @NotBlank
     private String link;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "proyecto")
-    private List<IntegranteProyecto> integrantes= new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @JoinTable(name = "integrante_proyecto", joinColumns = @JoinColumn(name =
+    // "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "codigo_integrante"))
+    private List<Integrante> integrantes = new ArrayList<>();
 
-    public Proyecto(ProyectoRequest proyectoRequest)
-    {
-        this.titulo=proyectoRequest.getTitulo();
-        this.fecha=proyectoRequest.getFecha();
-        this.materia=proyectoRequest.getMateria();
-        this.semestre=proyectoRequest.getSemestre();
-        this.descripcion=proyectoRequest.getDescripcion();
-        this.link=proyectoRequest.getLink();
+    public Proyecto(ProyectoRequest proyectoRequest) {
+        this.titulo = proyectoRequest.getTitulo();
+        this.fecha = proyectoRequest.getFecha();
+        this.materia = proyectoRequest.getMateria();
+        this.semestre = proyectoRequest.getSemestre();
+        this.descripcion = proyectoRequest.getDescripcion();
+        this.link = proyectoRequest.getLink();
     }
-    
+
+    // agregar integrante
+    public void addIntegrante(Integrante integrante) {
+        this.integrantes.add(integrante);
+    }
+
 }

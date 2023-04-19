@@ -10,21 +10,21 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="Integrante_Proyecto")
+@Table(name = "integrante_proyecto")
 public class IntegranteProyecto {
-    @EmbeddedId
-    private IntegranteProyectoId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    @MapsId("codigo_integrante")
+    // @MapsId("codigoIntegrante")
+    @JoinColumn(name = "codigo_integrante")
     private Integrante integrante;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("id_proyecto")
+    // @MapsId("idProyecto")
+    @JoinColumn(name = "id_proyecto")
     private Proyecto proyecto;
 
-
-    
-    
 }

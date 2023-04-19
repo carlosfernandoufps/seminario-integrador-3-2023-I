@@ -8,14 +8,14 @@ import org.springframework.stereotype.Repository;
 import ingemedia.proyectos.aula.entities.Integrante;
 
 @Repository
-public interface IntegranteRepository extends JpaRepository<Integrante, Integer> {
+public interface IntegranteRepository extends JpaRepository<Integrante, Long> {
 
   Optional<Integrante> findByCorreo(String correo);
 
   // eliminar un integrante por codigo
-  void deleteByCodigo(int codigo);
+  void deleteByCodigo(String codigo);
 
   // consultar un integrante por codigo
-  Optional<Integrante> findByCodigo(int codigo);
+  Optional<Integrante> findByCodigo(String codigo);
 
 }

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class IntegranteRequest {
 
   @NotNull(message = "El campo codigo no puede ser nulo")
-  private Integer codigo;
+  private String codigo;
 
   @NotBlank(message = "El campo nombre no puede estar vacio")
   private String nombre;
