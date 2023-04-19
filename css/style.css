@@ -1,0 +1,42 @@
+header{
+	background: #B53318;
+	color: white;
+	font-family: 'Alkatra', cursive;
+
+}
+
+.nav-link {
+    color: white;
+}
+
+#titulo{
+	margin-top: 2%;
+	margin-right: 5%;
+	font-family: 'Alkatra', cursive;
+}
+
+#tarjeta{
+	margin-left: 50%;
+	margin-top: 5%;
+}
+
+#boton, #tit_tar{
+	font-family: 'Dosis', sans-serif;
+
+}
+
+#navbarSupportedContent{
+
+	margin-top: 8%;
+}
+footer{
+	font-family: "Yuji Syuku", alkatra;
+}
+#text_tar{
+	font-family: 'Nunito', sans-serif;
+
+}
+
+#logo{
+	margin: 1%;
+}
