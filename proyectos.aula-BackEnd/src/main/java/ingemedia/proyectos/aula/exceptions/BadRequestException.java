@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class BadRequestException extends RuntimeException {
 
   private ErrorResponse errorResponse;
+
 }

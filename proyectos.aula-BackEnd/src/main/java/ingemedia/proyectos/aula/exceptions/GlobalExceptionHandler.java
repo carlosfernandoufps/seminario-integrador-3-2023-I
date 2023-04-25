@@ -1,7 +1,7 @@
 package ingemedia.proyectos.aula.exceptions;
 
-import java.util.stream.Collectors;
-
+import ingemedia.proyectos.aula.responses.ErrorResponse;
+import ingemedia.proyectos.aula.responses.MensajeResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import ingemedia.proyectos.aula.responses.ErrorResponse;
-import ingemedia.proyectos.aula.responses.MensajeResponse;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

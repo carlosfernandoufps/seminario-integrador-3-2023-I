@@ -1,9 +1,11 @@
 package ingemedia.proyectos.aula.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -12,6 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "integrante_proyecto")
 public class IntegranteProyecto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

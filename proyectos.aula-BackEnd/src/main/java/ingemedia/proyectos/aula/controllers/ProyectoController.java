@@ -1,27 +1,19 @@
 package ingemedia.proyectos.aula.controllers;
 
+import ingemedia.proyectos.aula.entities.Proyecto;
+import ingemedia.proyectos.aula.request.ProyectoRequest;
+import ingemedia.proyectos.aula.responses.MensajeResponse;
+import ingemedia.proyectos.aula.services.ProyectoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
-import ingemedia.proyectos.aula.entities.Proyecto;
-import ingemedia.proyectos.aula.services.ProyectoService;
-
-import jakarta.validation.Valid;
-import ingemedia.proyectos.aula.request.*;
-import ingemedia.proyectos.aula.responses.MensajeResponse;
-
 @RestController
-@RequestMapping("/proyectos")
+@RequestMapping("/api/v1/proyectos")
+@Tag(name = "Proyectos", description = "API para la gestion de proyectos")
 public class ProyectoController {
 
     private final ProyectoService proyectoService;
@@ -59,7 +51,6 @@ public class ProyectoController {
     @DeleteMapping("/{id}")
     public MensajeResponse eliminarProyecto(@PathVariable Long id) {
         proyectoService.eliminarProyecto(id);
-
         return new MensajeResponse("El integrante con el codigo " + id + " fue eliminado");
     }
 
@@ -101,11 +92,9 @@ public class ProyectoController {
     public MensajeResponse agregarIntegranteAProyecto(@PathVariable String codigoIntegrante,
             @PathVariable Long idProyecto) {
         proyectoService.agregarIntegranteAProyecto(idProyecto, codigoIntegrante);
-
         return new MensajeResponse(
                 "El integrante con el codigo " + codigoIntegrante + " fue agregado al proyecto con el id "
                         + idProyecto);
-
     }
 
 }

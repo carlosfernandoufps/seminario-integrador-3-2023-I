@@ -1,12 +1,11 @@
 package ingemedia.proyectos.aula.repositories;
 
+import ingemedia.proyectos.aula.entities.Proyecto;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import ingemedia.proyectos.aula.entities.Proyecto;
 
 public interface ProyectoRepository extends JpaRepository<Proyecto, Long> {
 

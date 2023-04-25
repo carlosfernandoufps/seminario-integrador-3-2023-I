@@ -1,14 +1,13 @@
 package ingemedia.proyectos.aula.services;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import ingemedia.proyectos.aula.entities.Integrante;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.IntegranteRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 

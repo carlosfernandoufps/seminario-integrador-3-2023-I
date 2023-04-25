@@ -1,24 +1,18 @@
 package ingemedia.proyectos.aula.controllers;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import ingemedia.proyectos.aula.entities.Integrante;
 import ingemedia.proyectos.aula.request.IntegranteRequest;
 import ingemedia.proyectos.aula.responses.MensajeResponse;
 import ingemedia.proyectos.aula.services.IntegranteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/integrantes")
+@RequestMapping("/api/v1/integrantes")
+@Tag(name = "Integrantes", description = "API para la gestion de integrantes")
 public class IntegranteController {
 
     private final IntegranteService integranteService;
@@ -57,7 +51,6 @@ public class IntegranteController {
     @DeleteMapping("/{codigo}")
     public MensajeResponse eliminarIntegrante(@PathVariable String codigo) {
         integranteService.eliminarIntegrante(codigo);
-
         return new MensajeResponse("El integrante con el codigo " + codigo + " fue eliminado");
     }
 

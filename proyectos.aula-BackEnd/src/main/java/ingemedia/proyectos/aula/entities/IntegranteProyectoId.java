@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IntegranteProyectoId {
+
     private String codigoIntegrante;
     private Long idProyecto;
+
 }

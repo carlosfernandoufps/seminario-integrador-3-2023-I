@@ -1,11 +1,10 @@
 package ingemedia.proyectos.aula.repositories;
 
-import java.util.Optional;
-
+import ingemedia.proyectos.aula.entities.IntegranteProyecto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ingemedia.proyectos.aula.entities.IntegranteProyecto;
+import java.util.Optional;
 
 @Repository
 public interface IntegranteProyectoRepository extends JpaRepository<IntegranteProyecto, Long> {
