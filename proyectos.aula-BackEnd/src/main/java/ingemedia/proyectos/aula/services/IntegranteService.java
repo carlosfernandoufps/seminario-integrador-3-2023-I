@@ -2,7 +2,7 @@ package ingemedia.proyectos.aula.services;
 
 import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
-import ingemedia.proyectos.aula.repositories.IntegranteRepository;
+import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,9 @@ import java.util.Optional;
 
 public class IntegranteService {
 
-  private final IntegranteRepository integranteRepository;
+  private final UsuarioRepository integranteRepository;
 
-  IntegranteService(IntegranteRepository integranteRepository) {
+  IntegranteService(UsuarioRepository integranteRepository) {
     this.integranteRepository = integranteRepository;
   }
 

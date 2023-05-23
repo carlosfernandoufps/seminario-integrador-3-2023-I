@@ -5,7 +5,7 @@ import ingemedia.proyectos.aula.entities.IntegranteProyecto;
 import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.IntegranteProyectoRepository;
-import ingemedia.proyectos.aula.repositories.IntegranteRepository;
+import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 
@@ -24,10 +24,10 @@ import java.util.Optional;
 public class ProyectoService {
 
   private final ProyectoRepository proyectoRepository;
-  private final IntegranteRepository integranteRepository;
+  private final UsuarioRepository integranteRepository;
   private final IntegranteProyectoRepository integranteProyectoRepository;
 
-  ProyectoService(ProyectoRepository proyectoRepository, IntegranteRepository integranteRepository,
+  ProyectoService(ProyectoRepository proyectoRepository, UsuarioRepository integranteRepository,
       IntegranteProyectoRepository integranteProyectoRepository) {
     this.proyectoRepository = proyectoRepository;
     this.integranteRepository = integranteRepository;
