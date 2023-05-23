@@ -19,4 +19,4 @@ Abre la terminal en la raíz del proyecto y ejecuta: ```mvnw clean install```
 
 Ejecuta ```mvnw spring-boot:run``` para iniciar el servidor de la API en ```http://localhost:8080```
 
-Para ver la documentacion de la api y los EndPoints ve a: ```http://localhost:8080/swagger-ui/index.html```
+Para ver la documentacion de la api y los EndPoints ve a: ```http://localhost:8091/openapi/swagger-ui/index.html#/```
