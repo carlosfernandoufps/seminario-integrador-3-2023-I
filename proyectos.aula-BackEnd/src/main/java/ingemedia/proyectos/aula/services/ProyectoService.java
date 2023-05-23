@@ -6,6 +6,7 @@ import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.IntegranteProyectoRepository;
 import ingemedia.proyectos.aula.repositories.UsuarioRepository;
+import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 
@@ -201,6 +202,10 @@ public class ProyectoService {
 
     Proyecto proyectoExistente = proyecto.get();
     Usuario integranteExistente = integrante.get();
+
+    if (integranteExistente.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(new ErrorResponse("No se puede agregar un administrador a un proyecto"));
+    }
 
     // verificar que el integrante no este ya en el proyecto
     List<IntegranteProyecto> integrante_p = integranteProyectoRepository.findAll();
