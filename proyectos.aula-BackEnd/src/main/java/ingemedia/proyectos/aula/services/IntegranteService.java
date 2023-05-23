@@ -4,6 +4,8 @@ import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +53,8 @@ public class IntegranteService {
       throw new BadRequestException(
           new ErrorResponse("El integrante con el correo " + integrante.getCorreo() + " ya existe"));
     } else {
+      String passwordEncriptado = new BCryptPasswordEncoder().encode(integrante.getPassword());
+      integrante.setPassword(passwordEncriptado);
       return integranteRepository.save(integrante);
     }
   }
@@ -69,6 +73,8 @@ public class IntegranteService {
   public Usuario actualizarIntegrante(String codigo, Usuario integrante) {
     Optional<Usuario> integranteExistente = integranteRepository.findByCodigo(codigo);
     if (integranteExistente.isPresent()) {
+      String passwordEncriptado = new BCryptPasswordEncoder().encode(integrante.getPassword());
+      integrante.setPassword(passwordEncriptado);
       integrante.setCodigo(codigo);
       return integranteRepository.save(integrante);
     } else {
