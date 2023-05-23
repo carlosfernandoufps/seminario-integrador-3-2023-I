@@ -24,9 +24,9 @@ public class OpenApiConfig {
                         .name("Apache License, Version 2.0")
                         .url("https://www.apache.org/licenses/LICENSE-2.0"))
                 .contact(new Contact()
-                        .name("NATALIA ORTIZ ARMESTO")
+                        .name("ELKIN GRANADOS")
                         .url("https://github.com/carlosfernandoufps/seminario-integrador-3-2023-I")
-                        .email("nataliaoa@ufps.edu.co"))
+                        .email("elkinadriangc@ufps.edu.co"))
                 .termsOfService("https://www.ufps.edu.co/");
     }
 
