@@ -3,6 +3,7 @@ package ingemedia.proyectos.aula.services;
 import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.UsuarioRepository;
+import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,6 +42,10 @@ public class IntegranteService {
   // Registrar un integrante
   public Usuario registrarIntegrante(Usuario integrante) {
 
+    if (integrante.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(new ErrorResponse("No se puede registrar un administrador"));
+    }
+
     // buscar por codigo
     Optional<Usuario> integranteExistente2 = integranteRepository.findByCodigo(integrante.getCodigo());
     if (integranteExistente2.isPresent()) {
@@ -61,16 +66,21 @@ public class IntegranteService {
 
   // Eliminar un integrante
   public void eliminarIntegrante(String codigo) {
+
     Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
-    if (integrante.isPresent()) {
+    if (integrante.isPresent() && integrante.get().getRol() != Rol.ADMIN) {
       integranteRepository.deleteByCodigo(codigo);
     } else {
-      throw new BadRequestException(new ErrorResponse("El integrante con el codigo " + codigo + " no existe"));
+      throw new BadRequestException(new ErrorResponse(
+          "El integrante con el codigo " + codigo + " no existe o si es un admin no se puede eliminar"));
     }
   }
 
   // Actualizar un integrante
   public Usuario actualizarIntegrante(String codigo, Usuario integrante) {
+    if (integrante.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(new ErrorResponse("No se puede actualizar un administrador"));
+    }
     Optional<Usuario> integranteExistente = integranteRepository.findByCodigo(codigo);
     if (integranteExistente.isPresent()) {
       String passwordEncriptado = new BCryptPasswordEncoder().encode(integrante.getPassword());
