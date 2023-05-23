@@ -25,7 +25,7 @@ import java.util.List;
 public class Proyecto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -51,10 +51,12 @@ public class Proyecto {
     @NotBlank
     private String link;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // @JoinTable(name = "integrante_proyecto", joinColumns = @JoinColumn(name =
-    // "id_proyecto"), inverseJoinColumns = @JoinColumn(name = "codigo_integrante"))
-    private List<Integrante> integrantes = new ArrayList<>();
+    @NotNull
+    @NotBlank
+    private String imagen;
+
+    @OneToMany(orphanRemoval = true, mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<IntegranteProyecto> integrantes = new ArrayList<>();
 
     public Proyecto(ProyectoRequest proyectoRequest) {
         this.titulo = proyectoRequest.getTitulo();
@@ -63,10 +65,11 @@ public class Proyecto {
         this.semestre = proyectoRequest.getSemestre();
         this.descripcion = proyectoRequest.getDescripcion();
         this.link = proyectoRequest.getLink();
+        this.imagen = proyectoRequest.getImagen();
     }
 
     // agregar integrante
-    public void addIntegrante(Integrante integrante) {
+    public void addIntegrante(IntegranteProyecto integrante) {
         this.integrantes.add(integrante);
     }
 

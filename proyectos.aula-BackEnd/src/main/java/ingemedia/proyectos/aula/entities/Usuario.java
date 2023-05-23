@@ -1,6 +1,7 @@
 package ingemedia.proyectos.aula.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ingemedia.proyectos.aula.request.IntegranteRequest;
 import ingemedia.proyectos.aula.request.Rol;
@@ -22,8 +23,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "integrante")
-public class Integrante {
+@Table(name = "usuario")
+public class Usuario {
 
     @Id
     private String codigo;
@@ -42,14 +43,18 @@ public class Integrante {
     private String correo;
 
     @NotNull
+    @NotBlank
+    @JsonIgnore
+    private String password;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    // @ManyToMany(mappedBy = "integrantes")
-    @ManyToMany(mappedBy = "integrantes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Proyecto> proyectos = new ArrayList<>();
+    @OneToMany(orphanRemoval = true, mappedBy = "integrante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<IntegranteProyecto> proyectos = new ArrayList<>();
 
-    public Integrante(IntegranteRequest integranteRequest) {
+    public Usuario(IntegranteRequest integranteRequest) {
         this.codigo = integranteRequest.getCodigo();
         this.nombre = integranteRequest.getNombre();
         this.apellido = integranteRequest.getApellido();
@@ -58,7 +63,7 @@ public class Integrante {
     }
 
     // agregar proyectos
-    public void addProyecto(Proyecto proyecto) {
+    public void addProyecto(IntegranteProyecto proyecto) {
         this.proyectos.add(proyecto);
     }
 }

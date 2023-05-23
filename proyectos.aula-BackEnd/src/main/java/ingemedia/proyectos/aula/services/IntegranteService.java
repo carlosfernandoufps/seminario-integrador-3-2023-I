@@ -1,6 +1,6 @@
 package ingemedia.proyectos.aula.services;
 
-import ingemedia.proyectos.aula.entities.Integrante;
+import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.IntegranteRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
@@ -20,14 +20,14 @@ public class IntegranteService {
   }
 
   // optener todos los integrantes
-  public List<Integrante> getIntegrantes() {
+  public List<Usuario> getIntegrantes() {
     return integranteRepository.findAll();
 
   }
 
   // optener un integrante por codigo
-  public Integrante getIntegrante(String codigo) {
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
+  public Usuario getIntegrante(String codigo) {
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
     if (integrante.isPresent()) {
       return integrante.get();
     } else {
@@ -37,16 +37,16 @@ public class IntegranteService {
   }
 
   // Registrar un integrante
-  public Integrante registrarIntegrante(Integrante integrante) {
+  public Usuario registrarIntegrante(Usuario integrante) {
 
     // buscar por codigo
-    Optional<Integrante> integranteExistente2 = integranteRepository.findByCodigo(integrante.getCodigo());
+    Optional<Usuario> integranteExistente2 = integranteRepository.findByCodigo(integrante.getCodigo());
     if (integranteExistente2.isPresent()) {
       throw new BadRequestException(
           new ErrorResponse("El integrante con el codigo " + integrante.getCodigo() + " ya existe"));
     }
 
-    Optional<Integrante> integranteExistente = integranteRepository.findByCorreo(integrante.getCorreo());
+    Optional<Usuario> integranteExistente = integranteRepository.findByCorreo(integrante.getCorreo());
     if (integranteExistente.isPresent()) {
       throw new BadRequestException(
           new ErrorResponse("El integrante con el correo " + integrante.getCorreo() + " ya existe"));
@@ -57,7 +57,7 @@ public class IntegranteService {
 
   // Eliminar un integrante
   public void eliminarIntegrante(String codigo) {
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
     if (integrante.isPresent()) {
       integranteRepository.deleteByCodigo(codigo);
     } else {
@@ -66,8 +66,8 @@ public class IntegranteService {
   }
 
   // Actualizar un integrante
-  public Integrante actualizarIntegrante(String codigo, Integrante integrante) {
-    Optional<Integrante> integranteExistente = integranteRepository.findByCodigo(codigo);
+  public Usuario actualizarIntegrante(String codigo, Usuario integrante) {
+    Optional<Usuario> integranteExistente = integranteRepository.findByCodigo(codigo);
     if (integranteExistente.isPresent()) {
       integrante.setCodigo(codigo);
       return integranteRepository.save(integrante);

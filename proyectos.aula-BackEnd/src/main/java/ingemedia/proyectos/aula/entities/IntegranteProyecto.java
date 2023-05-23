@@ -12,21 +12,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "integrante_proyecto")
+// @Table(name = "proyecto_integrantes")
 public class IntegranteProyecto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
-    // @MapsId("codigoIntegrante")
     @JoinColumn(name = "codigo_integrante")
-    private Integrante integrante;
+    private Usuario integrante;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    // @MapsId("idProyecto")
+    @JsonBackReference
     @JoinColumn(name = "id_proyecto")
     private Proyecto proyecto;
 

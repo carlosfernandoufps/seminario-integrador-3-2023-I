@@ -1,6 +1,6 @@
 package ingemedia.proyectos.aula.services;
 
-import ingemedia.proyectos.aula.entities.Integrante;
+import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.entities.IntegranteProyecto;
 import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
@@ -8,10 +8,16 @@ import ingemedia.proyectos.aula.repositories.IntegranteProyectoRepository;
 import ingemedia.proyectos.aula.repositories.IntegranteRepository;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+
+import org.apache.logging.log4j.spi.ObjectThreadContextMap;
+import org.hibernate.type.descriptor.java.LocalDateJavaType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -111,17 +117,41 @@ public class ProyectoService {
 
   // listar los proyectos que tiene un integrante
 
-  public List<Proyecto> getProyectosByCodigoIntegrante(String codigoIntegrante) {
+  public List<Map<String, Object>> getProyectosByCodigoIntegrante(String codigoIntegrante) {
 
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigoIntegrante);
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigoIntegrante);
 
     if (!integrante.isPresent()) {
-      throw new BadRequestException(new ErrorResponse("El integrante con codigo " + codigoIntegrante + " no existe"));
+      throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+          codigoIntegrante + " no existe"));
     }
 
-    List<Proyecto> proyectos = integrante.get().getProyectos();
+    List<IntegranteProyecto> proyectoIntegrante = integrante.get().getProyectos();
+    if (proyectoIntegrante.isEmpty()) {
+      throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+          codigoIntegrante + " no tiene proyectos"));
+    }
 
-    return proyectos;
+    // listar los proyectos que tiene un integrante
+
+    List<Object[]> proyectos = integranteRepository.findProyectosByCodigoIntegrante(codigoIntegrante);
+
+    List<Map<String, Object>> result = new ArrayList<>();
+    for (Object[] row : proyectos) {
+      LocalDate fecha = new LocalDateJavaType().fromString(row[3].toString());
+      Map<String, Object> map = new HashMap<>();
+      map.put("id", row[0]);
+      map.put("titulo", row[1]);
+      map.put("descripcion", row[2]);
+      map.put("fecha", fecha);
+      map.put("imagen", row[4]);
+      map.put("link", row[5]);
+      map.put("materia", row[6]);
+      map.put("semestre", row[7]);
+      result.add(map);
+    }
+
+    return result;
 
   }
 
@@ -154,35 +184,42 @@ public class ProyectoService {
     // System.out.println("proyecto que llega: " + idProyecto);
 
     Optional<Proyecto> proyecto = proyectoRepository.findById(idProyecto);
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigoIntegrante);
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigoIntegrante);
 
     // System.out.println("integrante: " + integrante.get().getNombre());
     // System.out.println("proyecto: " + proyecto.get().getTitulo());
 
     if (!proyecto.isPresent()) {
-      throw new BadRequestException(new ErrorResponse("El proyecto con id " + idProyecto + " no existe"));
+      throw new BadRequestException(new ErrorResponse("El proyecto con id " +
+          idProyecto + " no existe"));
     }
 
     if (!integrante.isPresent()) {
-      throw new BadRequestException(new ErrorResponse("El integrante con codigo " + codigoIntegrante + " no existe"));
+      throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+          codigoIntegrante + " no existe"));
     }
 
     Proyecto proyectoExistente = proyecto.get();
-    Integrante integranteExistente = integrante.get();
+    Usuario integranteExistente = integrante.get();
 
-    proyectoExistente.addIntegrante(integranteExistente);
-    integranteExistente.addProyecto(proyectoExistente);
-
-    proyectoRepository.save(proyectoExistente);
-    integranteRepository.save(integranteExistente);
+    // verificar que el integrante no este ya en el proyecto
+    List<IntegranteProyecto> integrante_p = integranteProyectoRepository.findAll();
+    if (!integrante_p.isEmpty()) {
+      for (IntegranteProyecto ip : integrante_p) {
+        if (ip.getIntegrante().getCodigo().equals(codigoIntegrante) && ip.getProyecto().getId().equals(idProyecto)) {
+          throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+              codigoIntegrante + " ya esta en el proyecto con id " + idProyecto));
+        }
+      }
+    }
 
     IntegranteProyecto integranteProyecto = new IntegranteProyecto();
-    // integranteProyecto.setId(new
-    // IntegranteProyectoId(integranteExistente.getCodigo(),
-    // proyectoExistente.getId()));
+
     integranteProyecto.setProyecto(proyectoExistente);
     integranteProyecto.setIntegrante(integranteExistente);
 
+    // proyectoRepository.save(proyectoExistente);
+    // integranteRepository.save(integranteExistente);
     integranteProyectoRepository.save(integranteProyecto);
   }
 

@@ -27,4 +27,8 @@ public class IntegranteRequest {
 
   @NotNull(message = "El campo rol no puede ser nulo")
   private Rol rol;
+
+  @NotNull(message = "El campo password no puede ser nulo")
+  @NotBlank(message = "El campo password no puede estar vacio")
+  private String password;
 }
