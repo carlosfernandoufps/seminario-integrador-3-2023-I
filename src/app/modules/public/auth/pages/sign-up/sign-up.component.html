@@ -2,48 +2,53 @@
   <div class="wrapper wrapper-login">
     <div class="container container-signup animated fadeIn">
       <h3 class="text-center">Sign Up</h3>
-      <div class="login-form">
+      <form class="login-form" autocomplete="off">
         <div class="form-group">
-          <label for="fullname" class="placeholder"><b>Fullname</b></label>
-          <input id="fullname" name="fullname" type="text" class="form-control" required>
+          <label for="code" class="placeholder">
+            <b>Codigo</b>
+          </label>
+          <input id="code" name="codigo" type="text" class="form-control" [(ngModel)]="user.codigo" required>
         </div>
         <div class="form-group">
-          <label for="email" class="placeholder"><b>Email</b></label>
-          <input id="email" name="email" type="email" class="form-control" required>
+          <label for="firstname" class="placeholder">
+            <b>Nombre</b>
+          </label>
+          <input id="firstname" name="nombre" type="text" class="form-control" [(ngModel)]="user.nombre" required>
         </div>
         <div class="form-group">
-          <label for="passwordsignin" class="placeholder"><b>Password</b></label>
+          <label for="lastname" class="placeholder">
+            <b>Apellido</b>
+          </label>
+          <input id="lastname" name="apellido" type="text" class="form-control" [(ngModel)]="user.apellido" required>
+        </div>
+        <div class="form-group">
+          <label for="email" class="placeholder">
+            <b>Correo</b>
+          </label>
+          <input id="email" name="correo" type="email" class="form-control" [(ngModel)]="user.correo" required>
+        </div>
+        <div class="form-group">
+          <label for="passwordsignin" class="placeholder">
+            <b>Contraseña</b>
+          </label>
           <div class="position-relative">
-            <input id="passwordsignin" name="passwordsignin" type="password" class="form-control" required>
-            <div class="show-password">
-              <i class="flaticon-interface"></i>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="confirmpassword" class="placeholder"><b>Confirm Password</b></label>
-          <div class="position-relative">
-            <input id="confirmpassword" name="confirmpassword" type="password" class="form-control" required>
-            <div class="show-password">
-              <i class="flaticon-interface"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row form-sub m-0">
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" name="agree" id="agree">
-            <label class="custom-control-label" for="agree">I Agree the terms and conditions.</label>
+            <input id="passwordsignin" name="password" type="password" class="form-control" [(ngModel)]="user.password"
+              required>
           </div>
         </div>
         <div class="row form-action">
           <div class="col-md-6">
-            <a class="btn btn-danger btn-link w-100 fw-bold" id="show-signin" [routerLink]="['/public/auth/sign-in']">Cancel</a>
+            <a class="btn btn-danger btn-link w-100 fw-bold" id="show-signin" [routerLink]="['/public/auth/sign-in']">
+              Cancel
+            </a>
           </div>
           <div class="col-md-6">
-            <a href="#" class="btn btn-primary w-100 fw-bold">Sign Up</a>
+            <button class="btn btn-primary w-100 fw-bold" type="button" (click)="onSignUp()">
+              Sign Up
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

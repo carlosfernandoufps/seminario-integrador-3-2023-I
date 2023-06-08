@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { IProject } from '@data/interfaces/project.interface';
+import { IProject } from '@data/interfaces/http/project.interface';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -40,6 +40,46 @@ export class ProjectService {
         map((project: IProject) => {
           project.imagen = `assets/img/tarjeta${this.currentValue}.jpg`;
           return project;
+        })
+      );
+  }
+
+  public obtenerProyectosPorMaterias(materia: string[]): Observable<IProject[]> {
+    const params = materia.map((m: string) => `materias=${m}`).join('&');
+    return this.http.get<IProject[]>(`${this.URL}/materias?${params}`)
+      .pipe(
+        map((project: IProject[]) => {
+          return project.map((p: IProject) => {
+            p.fecha = new Date(p.fecha).toLocaleDateString('en-CA');
+            p.imagen = `assets/img/tarjeta${this.currentValue}.jpg`;
+            return p;
+          });
+        })
+      );
+  }
+
+  public obtenerProyectosPorSemestre(semestre: string): Observable<IProject[]> {
+    return this.http.get<IProject[]>(`${this.URL}/semestre/${semestre}`)
+      .pipe(
+        map((project: IProject[]) => {
+          return project.map((p: IProject) => {
+            p.fecha = new Date(p.fecha).toLocaleDateString('en-CA');
+            p.imagen = `assets/img/tarjeta${this.currentValue}.jpg`;
+            return p;
+          });
+        })
+      );
+  }
+
+  public obtenerProyectosPorFecha(fecha: string): Observable<IProject[]> {
+    return this.http.get<IProject[]>(`${this.URL}/fecha/${fecha}`)
+      .pipe(
+        map((project: IProject[]) => {
+          return project.map((p: IProject) => {
+            p.fecha = new Date(p.fecha).toLocaleDateString('en-CA');
+            p.imagen = `assets/img/tarjeta${this.currentValue}.jpg`;
+            return p;
+          });
         })
       );
   }

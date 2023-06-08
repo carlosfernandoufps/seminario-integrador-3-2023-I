@@ -20,21 +20,21 @@ const PROJECTS_ROUTES: Routes = [
         pathMatch: 'full',
         title: 'List of Projects',
         canActivate: [RoleGuard],
-        data: { roles: [ROLE.ADMIN, ROLE.SUPPORT, ROLE.TEACHER, ROLE.STUDENT] }
+        data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {
         path: 'new',
         component: AddComponent,
         title: 'New Project',
         canActivate: [RoleGuard],
-        data: { roles: [ROLE.ADMIN, ROLE.SUPPORT, ROLE.TEACHER, ROLE.STUDENT] }
+        data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {
         path: ':id',
         component: DetailComponent,
         title: 'Detail of Project',
         canActivate: [RoleGuard],
-        data: { roles: [ROLE.ADMIN, ROLE.SUPPORT, ROLE.TEACHER, ROLE.STUDENT] }
+        data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
     ]
   }

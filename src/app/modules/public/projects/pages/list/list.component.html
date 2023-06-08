@@ -1,102 +1,56 @@
 <div class="row">
-  <div class="col-3">
+  <div class="col-xs-12 col-sm-6 col-md-4 col-xxl-2 col-xl-2">
     <form>
       <div class="form-group">
-        <label for="exampleFormControlSelect1">Categorias</label>
+        <label for="exampleFormControlSelect1">Materias</label>
         <div class="form-check" style="margin-bottom: -20px;">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck1">
-            <label class="custom-control-label" for="customCheck1">Checked</label>
+            <label class="custom-control-label" for="customCheck1">Seminario Integrador</label>
           </div>
         </div>
-
         <div class="form-check" style="margin-bottom: -20px;">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck2">
-            <label class="custom-control-label" for="customCheck2">Checked</label>
+            <label class="custom-control-label" for="customCheck2">Aplicaciones Moviles</label>
           </div>
         </div>
-
         <div class="form-check" style="margin-bottom: -20px;">
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" id="customCheck3">
-            <label class="custom-control-label" for="customCheck3">Checked</label>
-          </div>
-        </div>
-
-        <div class="form-check" style="margin-bottom: -20px;">
-          <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="customCheck4">
-            <label class="custom-control-label" for="customCheck4">Checked</label>
+            <label class="custom-control-label" for="customCheck3">Programacion Web</label>
           </div>
         </div>
       </div>
+      <hr>
       <div class="form-group">
-        <label for="exampleFormControlSelect1">Tipo de proyecto</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Proyecto 1</option>
-          <option>Proyecto 2</option>
-          <option>Proyecto 3</option>
-          <option>Proyecto 4</option>
-          <option>Proyecto 5</option>
+        <label for="select-semestre">Semestre</label>
+        <select class="form-control" id="select-semestre">
+          <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10]" [value]="number">
+            {{ number }}
+          </option>
         </select>
       </div>
+      <hr>
       <div class="form-group">
-        <label for="exampleFormControlSelect1">Estado</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Estado 1</option>
-          <option>Estado 2</option>
-          <option>Estado 3</option>
-          <option>Estado 4</option>
-          <option>Estado 5</option>
-        </select>
+        <label>Fecha</label>
+        <div class="input-group">
+          <input type="date" class="form-control" id="datepicker" name="datepicker" [min]="fecha.min" [max]="fecha.max"
+            [(ngModel)]="fecha.current">
+        </div>
       </div>
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Ubicación</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Ubicación 1</option>
-          <option>Ubicación 2</option>
-          <option>Ubicación 3</option>
-          <option>Ubicación 4</option>
-          <option>Ubicación 5</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Presupuesto</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Presupuesto 1</option>
-          <option>Presupuesto 2</option>
-          <option>Presupuesto 3</option>
-          <option>Presupuesto 4</option>
-          <option>Presupuesto 5</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Fecha de inicio</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Fecha de inicio 1</option>
-          <option>Fecha de inicio 2</option>
-          <option>Fecha de inicio 3</option>
-          <option>Fecha de inicio 4</option>
-          <option>Fecha de inicio 5</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Fecha de finalización</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-          <option>Fecha de finalización 1</option>
-          <option>Fecha de finalización 2</option>
-          <option>Fecha de finalización 3</option>
-          <option>Fecha de finalización 4</option>
-          <option>Fecha de finalización 5</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Buscar</button>
+      <hr>
+      <div class="form-group text-center">
+        <button type="button" class="btn btn-primary mr-2" (click)="onSearch()">Buscar</button>
+        <button type="button" class="btn btn-danger ml-2" (click)="onClear()">Limpiar</button>
       </div>
     </form>
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-2 col-xxl-2" *ngFor="let proyecto of listaProyectos">
-    <app-card [project]="proyecto"></app-card>
+  <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 col-xxl-10 col-xl-10">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3" *ngFor="let proyecto of listaProyectos">
+        <app-card [project]="proyecto"></app-card>
+      </div>
+    </div>
   </div>
 </div>

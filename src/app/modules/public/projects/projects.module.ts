@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ListComponent } from './pages/list/list.component';
@@ -15,6 +16,7 @@ import { CardComponent } from './components/card/card.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ProjectsRoutingModule
   ]
 })
