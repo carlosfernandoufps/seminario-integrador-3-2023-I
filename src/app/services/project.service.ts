@@ -10,7 +10,7 @@ import { Project } from 'src/app/interface/project.interface';
 })
 export class ProjectService {
 
-  private readonly URL = "http://137.184.150.100:8091/api/v1/proyectos";
+  private readonly URL = "http://3.15.147.189:8090/api/v1/proyectos";
 
   constructor(
     private http: HttpClient
