@@ -14,8 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/integrantes")
-@PreAuthorize("hasAnyAuthority('ADMIN', 'ESTUDIANTE', 'DOCENTE')")
-@Tag(name = "Integrantes", description = "API para la gestion de usuarios")
 public class UsuarioController {
 
     private final IntegranteService integranteService;
@@ -26,14 +24,12 @@ public class UsuarioController {
 
     // obtener todos los integrantes
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Usuario> getIntegrantes() {
         return integranteService.getIntegrantes();
     }
 
     // obtener un integrante por codigo
     @GetMapping("/{codigo}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Usuario getIntegrante(@PathVariable String codigo) {
         return integranteService.getIntegrante(codigo);
     }
@@ -54,7 +50,6 @@ public class UsuarioController {
 
     // Eliminar un integrante
     @DeleteMapping("/{codigo}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public MensajeResponse eliminarIntegrante(@PathVariable String codigo) {
         integranteService.eliminarIntegrante(codigo);
         return new MensajeResponse("El integrante con el codigo " + codigo + " fue eliminado");

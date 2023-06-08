@@ -9,8 +9,10 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/proyectos")
@@ -65,6 +67,15 @@ public class ProyectoController {
     @GetMapping("/materia/{materia}")
     public List<Proyecto> getProyectosByMateria(@PathVariable String materia) {
         return proyectoService.getProyectosByMateria(materia);
+    }
+
+    @GetMapping("/materias")
+    public List<Proyecto> getProyectosByMaterias(@RequestParam List<String> materias) {
+      Set<Proyecto> proyectoSet = new HashSet<>();
+      for(String materia: materias){
+          proyectoSet.addAll(proyectoService.getProyectosByMateria(materia));
+      }
+      return proyectoSet.stream().toList();
     }
 
     // listar los proyectos que tiene un integrante
