@@ -5,21 +5,13 @@
     <div class="sidebar-content">
       <div class="user">
         <div class="avatar-sm float-left mr-2">
-          <img
-            class="avatar-img rounded-circle"
-            [src]="currentUser.picture"
-            [alt]="currentUser.username"
-          />
+          <img class="avatar-img rounded-circle" src="assets/img/profile.jpg" [alt]="currentUser.nombre" />
         </div>
         <div class="info">
-          <a
-            data-toggle="collapse"
-            href="#collapseExample"
-            aria-expanded="true"
-          >
+          <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
             <span>
-              {{ currentUser.first_name }}
-              <span class="user-level">{{ currentUser.roles[0].name }}</span>
+              {{ currentUser.correo }}
+              <span class="user-level">{{ currentUser.rol }}</span>
               <span class="caret"></span>
             </span>
           </a>
@@ -54,11 +46,7 @@
             <h4 class="text-section">{{ item.title }}</h4>
           </li>
           <ng-container *ngFor="let subItem of item.children">
-            <li
-              class="nav-item"
-              [routerLinkActive]="['active']"
-              *ngIf="hasRole(subItem.roles!)"
-            >
+            <li class="nav-item" [routerLinkActive]="['active']" *ngIf="hasRole(subItem.roles!)">
               <ng-container *ngIf="!subItem.expanded">
                 <a [routerLink]="[subItem.link]">
                   <i class="{{ subItem.icon }}"></i>
@@ -74,23 +62,14 @@
                   </ng-container>
                 </a>
                 <ng-container *ngIf="subItem.children">
-                  <div
-                    class="collapse"
-                    [id]="subItem.title"
-                    [routerLinkActive]="['show']"
-                  >
+                  <div class="collapse" [id]="subItem.title" [routerLinkActive]="['show']">
                     <ul class="nav nav-collapse">
-                      <ng-container
-                        *ngFor="let subItemPath of subItem.children"
-                      >
-                        <li
-                          [routerLinkActive]="['active']"
-                          *ngIf="hasRole(subItemPath.roles!)"
-                        >
+                      <ng-container *ngFor="let subItemPath of subItem.children">
+                        <li [routerLinkActive]="['active']" *ngIf="hasRole(subItemPath.roles!)">
                           <a [routerLink]="[subItemPath.link]">
-                            <span class="sub-item">{{
-                              subItemPath.title
-                            }}</span>
+                            <span class="sub-item">
+                              {{ subItemPath.title }}
+                            </span>
                           </a>
                         </li>
                       </ng-container>
