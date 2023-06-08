@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-md-4 col-xxl-2 col-xl-2">
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Materias</label>
+        <div class="form-check" style="margin-bottom: -20px;">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck1">
+            <label class="custom-control-label" for="customCheck1">Seminario Integrador</label>
+          </div>
+        </div>
+        <div class="form-check" style="margin-bottom: -20px;">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck2">
+            <label class="custom-control-label" for="customCheck2">Aplicaciones Moviles</label>
+          </div>
+        </div>
+        <div class="form-check" style="margin-bottom: -20px;">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="customCheck3">
+            <label class="custom-control-label" for="customCheck3">Programacion Web</label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="form-group">
+        <label for="select-semestre">Semestre</label>
+        <select class="form-control" id="select-semestre">
+          <option *ngFor="let number of [1,2,3,4,5,6,7,8,9,10]" [value]="number">
+            {{ number }}
+          </option>
+        </select>
+      </div>
+      <hr>
+      <div class="form-group">
+        <label>Fecha</label>
+        <div class="input-group">
+          <input type="date" class="form-control" id="datepicker" name="datepicker" [min]="fecha.min" [max]="fecha.max"
+            [(ngModel)]="fecha.current">
+        </div>
+      </div>
+      <hr>
+      <div class="form-group text-center">
+        <button type="button" class="btn btn-primary mr-2" (click)="onSearch()">Buscar</button>
+        <button type="button" class="btn btn-danger ml-2" (click)="onClear()">Limpiar</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 col-xxl-10 col-xl-10">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-3 col-xxl-3" *ngFor="let proyecto of listaProyectos">
+        <app-card [project]="proyecto"></app-card>
+      </div>
+    </div>
+  </div>
+</div>

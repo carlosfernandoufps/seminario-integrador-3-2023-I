@@ -3,28 +3,26 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
+
+import { CoreModule } from '@core/core.module';
+import { SharedModule } from '@shared/shared.module';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
-import { CardComponent } from './components/card/card.component';
-import { ListComponent } from './pages/projects/list/list.component';
-import { DetailComponent } from './pages/projects/detail/detail.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    CardComponent,
-    ListComponent,
-    DetailComponent
-  ],
+  declarations: [AppComponent, AdminLayoutComponent, PublicLayoutComponent],
   imports: [
     BrowserModule,
     CommonModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CoreModule,
+    SharedModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

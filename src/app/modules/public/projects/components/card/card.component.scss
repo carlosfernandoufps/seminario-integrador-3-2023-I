@@ -1,0 +1,23 @@
+.card {
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.img-project {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+#tarjeta {
+  margin-left: 30%;
+  margin-top: 5%;
+}
+
+#tit_tar {
+  font-family: "Dosis", sans-serif;
+}
+
+#text_tar {
+  font-family: "Nunito", sans-serif;
+}
