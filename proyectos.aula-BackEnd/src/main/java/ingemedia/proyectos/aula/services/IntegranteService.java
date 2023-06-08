@@ -1,9 +1,12 @@
 package ingemedia.proyectos.aula.services;
 
-import ingemedia.proyectos.aula.entities.Integrante;
+import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
-import ingemedia.proyectos.aula.repositories.IntegranteRepository;
+import ingemedia.proyectos.aula.repositories.UsuarioRepository;
+import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,21 +16,21 @@ import java.util.Optional;
 
 public class IntegranteService {
 
-  private final IntegranteRepository integranteRepository;
+  private final UsuarioRepository integranteRepository;
 
-  IntegranteService(IntegranteRepository integranteRepository) {
+  IntegranteService(UsuarioRepository integranteRepository) {
     this.integranteRepository = integranteRepository;
   }
 
   // optener todos los integrantes
-  public List<Integrante> getIntegrantes() {
+  public List<Usuario> getIntegrantes() {
     return integranteRepository.findAll();
 
   }
 
   // optener un integrante por codigo
-  public Integrante getIntegrante(String codigo) {
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
+  public Usuario getIntegrante(String codigo) {
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
     if (integrante.isPresent()) {
       return integrante.get();
     } else {
@@ -37,38 +40,51 @@ public class IntegranteService {
   }
 
   // Registrar un integrante
-  public Integrante registrarIntegrante(Integrante integrante) {
+  public Usuario registrarIntegrante(Usuario integrante) {
+
+    if (integrante.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(new ErrorResponse("No se puede registrar un administrador"));
+    }
 
     // buscar por codigo
-    Optional<Integrante> integranteExistente2 = integranteRepository.findByCodigo(integrante.getCodigo());
+    Optional<Usuario> integranteExistente2 = integranteRepository.findByCodigo(integrante.getCodigo());
     if (integranteExistente2.isPresent()) {
       throw new BadRequestException(
           new ErrorResponse("El integrante con el codigo " + integrante.getCodigo() + " ya existe"));
     }
 
-    Optional<Integrante> integranteExistente = integranteRepository.findByCorreo(integrante.getCorreo());
+    Optional<Usuario> integranteExistente = integranteRepository.findByCorreo(integrante.getCorreo());
     if (integranteExistente.isPresent()) {
       throw new BadRequestException(
           new ErrorResponse("El integrante con el correo " + integrante.getCorreo() + " ya existe"));
     } else {
+      String passwordEncriptado = new BCryptPasswordEncoder().encode(integrante.getPassword());
+      integrante.setPassword(passwordEncriptado);
       return integranteRepository.save(integrante);
     }
   }
 
   // Eliminar un integrante
   public void eliminarIntegrante(String codigo) {
-    Optional<Integrante> integrante = integranteRepository.findByCodigo(codigo);
-    if (integrante.isPresent()) {
+
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
+    if (integrante.isPresent() && integrante.get().getRol() != Rol.ADMIN) {
       integranteRepository.deleteByCodigo(codigo);
     } else {
-      throw new BadRequestException(new ErrorResponse("El integrante con el codigo " + codigo + " no existe"));
+      throw new BadRequestException(new ErrorResponse(
+          "El integrante con el codigo " + codigo + " no existe o si es un admin no se puede eliminar"));
     }
   }
 
   // Actualizar un integrante
-  public Integrante actualizarIntegrante(String codigo, Integrante integrante) {
-    Optional<Integrante> integranteExistente = integranteRepository.findByCodigo(codigo);
+  public Usuario actualizarIntegrante(String codigo, Usuario integrante) {
+    if (integrante.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(new ErrorResponse("No se puede actualizar un administrador"));
+    }
+    Optional<Usuario> integranteExistente = integranteRepository.findByCodigo(codigo);
     if (integranteExistente.isPresent()) {
+      String passwordEncriptado = new BCryptPasswordEncoder().encode(integrante.getPassword());
+      integrante.setPassword(passwordEncriptado);
       integrante.setCodigo(codigo);
       return integranteRepository.save(integrante);
     } else {

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProyectoRequest {
-    
+
     @NotNull
     @NotBlank
     private String titulo;
@@ -28,12 +28,16 @@ public class ProyectoRequest {
     @NotBlank
     private String semestre;
 
-    @NotNull 
+    @NotNull
     @NotBlank
     private String descripcion;
 
-    @NotNull 
+    @NotNull
     @NotBlank
     private String link;
-    
+
+    @NotNull
+    @NotBlank
+    private String imagen;
+
 }

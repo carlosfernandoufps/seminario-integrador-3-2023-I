@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/proyectos")
@@ -68,8 +69,10 @@ public class ProyectoController {
 
     // listar los proyectos que tiene un integrante
     @GetMapping("/integrante/{codigoIntegrante}")
-    public List<Proyecto> getProyectosByCodigoIntegrante(@PathVariable String codigoIntegrante) {
+    public List<Map<String, Object>> getProyectosByCodigoIntegrante(@PathVariable String codigoIntegrante) {
+
         return proyectoService.getProyectosByCodigoIntegrante(codigoIntegrante);
+
     }
 
     // busqueda de proyecto por titulo (ignorando mayusculas y minusculas y acentos)
