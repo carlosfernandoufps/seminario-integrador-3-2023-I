@@ -23,7 +23,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
   Optional<Usuario> findByCodigo(String codigo);
 
   // listado de proyectos que tiene un integrante
-  @Query(value = "SELECT p.id, p.titulo, p.descripcion, p.fecha, p.imagen, p.link, p.materia, p.semestre FROM integrante i JOIN integrante_proyecto ip ON i.codigo = ip.codigo_integrante JOIN proyecto p ON ip.id_proyecto = p.id WHERE i.codigo = :codigo", nativeQuery = true)
+  @Query(value = "SELECT p.id, p.titulo, p.descripcion, p.fecha, p.imagen, p.link, p.materia, p.semestre FROM usuario i JOIN integrante_proyecto ip ON i.codigo = ip.codigo_integrante JOIN proyecto p ON ip.id_proyecto = p.id WHERE i.codigo = :codigo", nativeQuery = true)
   List<Object[]> findProyectosByCodigoIntegrante(@Param("codigo") String codigo);
 
   boolean existsByCorreo(String correo);

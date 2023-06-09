@@ -9,6 +9,7 @@ import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+import ingemedia.proyectos.aula.responses.MateriaResponse;
 
 import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.hibernate.type.descriptor.java.LocalDateJavaType;
@@ -134,7 +135,7 @@ public class ProyectoService {
     }
 
     // listar los proyectos que tiene un integrante
-
+    System.out.println("Aca llega bien");
     List<Object[]> proyectos = integranteRepository.findProyectosByCodigoIntegrante(codigoIntegrante);
 
     List<Map<String, Object>> result = new ArrayList<>();
@@ -226,6 +227,23 @@ public class ProyectoService {
     // proyectoRepository.save(proyectoExistente);
     // integranteRepository.save(integranteExistente);
     integranteProyectoRepository.save(integranteProyecto);
+  }
+
+  // listar las materias que hay en la base de datos
+  public List<MateriaResponse> getMaterias() {
+    List<String> materias = proyectoRepository.findMaterias();
+    if (materias.isEmpty()) {
+      throw new BadRequestException(new ErrorResponse("No hay materias en la base de datos"));
+    }
+
+    List<MateriaResponse> materiasResponse = new ArrayList<>();
+    for (String materia : materias) {
+      MateriaResponse materiaResponse = new MateriaResponse();
+      materiaResponse.setMateria(materia);
+      materiasResponse.add(materiaResponse);
+    }
+
+    return materiasResponse;
   }
 
 }

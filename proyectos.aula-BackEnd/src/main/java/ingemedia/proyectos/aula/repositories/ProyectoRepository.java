@@ -1,7 +1,10 @@
 package ingemedia.proyectos.aula.repositories;
 
 import ingemedia.proyectos.aula.entities.Proyecto;
+import ingemedia.proyectos.aula.responses.MateriaResponse;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,5 +35,9 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Long> {
 
   // solicitud en postman para probar la anterior funcion
   // http://localhost:8080/proyectos/fecha?fecha=2020-01-01
+
+  // listar las materias que hay en la base de datos
+  @Query(value = "SELECT DISTINCT materia FROM proyecto", nativeQuery = true)
+  List<String> findMaterias();
 
 }
