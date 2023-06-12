@@ -4,6 +4,7 @@ import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.request.ProyectoRequest;
 import ingemedia.proyectos.aula.responses.MateriaResponse;
 import ingemedia.proyectos.aula.responses.MensajeResponse;
+import ingemedia.proyectos.aula.responses.ProyectoResponse;
 import ingemedia.proyectos.aula.services.ProyectoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class ProyectoController {
 
   // obtener todos los proyectos
   @GetMapping
-  public List<Proyecto> getIntegrantes() {
+  public List<ProyectoResponse> getProyectos() {
     return proyectoService.getProyectos();
   }
 
@@ -40,8 +41,8 @@ public class ProyectoController {
 
   // Registrar un proyecto
   @PostMapping
-  public Proyecto registrarProyecto(@RequestBody @Valid ProyectoRequest proyecto) {
-    Proyecto proyectoNuevo = proyectoService.registrarProyecto(new Proyecto(proyecto));
+  public ProyectoResponse registrarProyecto(@RequestBody @Valid ProyectoRequest proyecto) {
+    ProyectoResponse proyectoNuevo = proyectoService.registrarProyecto(new Proyecto(proyecto), proyecto);
     return proyectoNuevo;
   }
 

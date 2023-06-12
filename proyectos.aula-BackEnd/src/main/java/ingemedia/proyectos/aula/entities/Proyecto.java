@@ -1,5 +1,6 @@
 package ingemedia.proyectos.aula.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ingemedia.proyectos.aula.request.ProyectoRequest;
@@ -24,53 +25,53 @@ import java.util.List;
 @Table(name = "proyecto")
 public class Proyecto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotNull
-    @NotBlank
-    private String titulo;
+  @NotNull
+  @NotBlank
+  private String titulo;
 
-    @NotNull
-    private LocalDate fecha;
+  @NotNull
+  private LocalDate fecha;
 
-    @NotNull
-    @NotBlank
-    private String materia;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_materia")
+  @JsonBackReference
+  private Materia materia;
 
-    @NotNull
-    @NotBlank
-    private String semestre;
+  @NotNull
+  @NotBlank
+  private String semestre;
 
-    @NotNull
-    @NotBlank
-    private String descripcion;
+  @NotNull
+  @NotBlank
+  private String descripcion;
 
-    @NotNull
-    @NotBlank
-    private String link;
+  @NotNull
+  @NotBlank
+  private String link;
 
-    @NotNull
-    @NotBlank
-    private String imagen;
+  @NotNull
+  @NotBlank
+  private String imagen;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<IntegranteProyecto> integrantes = new ArrayList<>();
+  @OneToMany(orphanRemoval = true, mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<IntegranteProyecto> integrantes = new ArrayList<>();
 
-    public Proyecto(ProyectoRequest proyectoRequest) {
-        this.titulo = proyectoRequest.getTitulo();
-        this.fecha = proyectoRequest.getFecha();
-        this.materia = proyectoRequest.getMateria();
-        this.semestre = proyectoRequest.getSemestre();
-        this.descripcion = proyectoRequest.getDescripcion();
-        this.link = proyectoRequest.getLink();
-        this.imagen = proyectoRequest.getImagen();
-    }
+  public Proyecto(ProyectoRequest proyectoRequest) {
+    this.titulo = proyectoRequest.getTitulo();
+    this.fecha = proyectoRequest.getFecha();
+    this.semestre = proyectoRequest.getSemestre();
+    this.descripcion = proyectoRequest.getDescripcion();
+    this.link = proyectoRequest.getLink();
+    this.imagen = proyectoRequest.getImagen();
+  }
 
-    // agregar integrante
-    public void addIntegrante(IntegranteProyecto integrante) {
-        this.integrantes.add(integrante);
-    }
+  // agregar integrante
+  public void addIntegrante(IntegranteProyecto integrante) {
+    this.integrantes.add(integrante);
+  }
 
 }

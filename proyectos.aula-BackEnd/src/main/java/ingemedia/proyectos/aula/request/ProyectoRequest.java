@@ -13,31 +13,31 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class ProyectoRequest {
 
-    @NotNull
-    @NotBlank
-    private String titulo;
+  @NotNull
+  @NotBlank
+  private String titulo;
 
-    @NotNull
-    private LocalDate fecha;
+  @NotNull
+  private LocalDate fecha;
 
-    @NotNull
-    @NotBlank
-    private String materia;
+  @NotNull
+  @NotBlank
+  private String materia;
 
-    @NotNull
-    @NotBlank
-    private String semestre;
+  @NotNull
+  @NotBlank
+  private String semestre;
 
-    @NotNull
-    @NotBlank
-    private String descripcion;
+  @NotNull
+  @NotBlank
+  private String descripcion;
 
-    @NotNull
-    @NotBlank
-    private String link;
+  @NotNull
+  @NotBlank
+  private String link;
 
-    @NotNull
-    @NotBlank
-    private String imagen;
+  @NotNull
+  @NotBlank
+  private String imagen;
 
 }

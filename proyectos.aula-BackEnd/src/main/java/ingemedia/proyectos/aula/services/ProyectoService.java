@@ -2,16 +2,19 @@ package ingemedia.proyectos.aula.services;
 
 import ingemedia.proyectos.aula.entities.Usuario;
 import ingemedia.proyectos.aula.entities.IntegranteProyecto;
+import ingemedia.proyectos.aula.entities.Materia;
 import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.exceptions.BadRequestException;
 import ingemedia.proyectos.aula.repositories.IntegranteProyectoRepository;
+import ingemedia.proyectos.aula.repositories.MateriaRepository;
 import ingemedia.proyectos.aula.repositories.UsuarioRepository;
+import ingemedia.proyectos.aula.request.ProyectoRequest;
 import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 import ingemedia.proyectos.aula.responses.MateriaResponse;
+import ingemedia.proyectos.aula.responses.ProyectoResponse;
 
-import org.apache.logging.log4j.spi.ObjectThreadContextMap;
 import org.hibernate.type.descriptor.java.LocalDateJavaType;
 import org.springframework.stereotype.Service;
 
@@ -28,18 +31,47 @@ public class ProyectoService {
   private final ProyectoRepository proyectoRepository;
   private final UsuarioRepository integranteRepository;
   private final IntegranteProyectoRepository integranteProyectoRepository;
+  private final MateriaRepository materiaRepository;
 
   ProyectoService(ProyectoRepository proyectoRepository, UsuarioRepository integranteRepository,
-      IntegranteProyectoRepository integranteProyectoRepository) {
+      IntegranteProyectoRepository integranteProyectoRepository, MateriaRepository materiaRepository) {
     this.proyectoRepository = proyectoRepository;
     this.integranteRepository = integranteRepository;
     this.integranteProyectoRepository = integranteProyectoRepository;
+    this.materiaRepository = materiaRepository;
   }
 
   // optener todos los proyectos
-  public List<Proyecto> getProyectos() {
-    return proyectoRepository.findAll();
+  public List<ProyectoResponse> getProyectos() {
+    List<Proyecto> proyectos = proyectoRepository.findAll();
+    List<ProyectoResponse> proyectosResponse = new ArrayList<>();
+    // System.out.println("ACA LLEGA");
+    for (Proyecto proyecto : proyectos) {
+      Proyecto proyecto1 = new Proyecto();
+      proyecto1.setId(proyecto.getId());
+      proyecto1.setTitulo(proyecto.getTitulo());
+      proyecto1.setFecha(proyecto.getFecha());
+      proyecto1.setSemestre(proyecto.getSemestre());
+      proyecto1.setDescripcion(proyecto.getDescripcion());
+      proyecto1.setMateria(proyecto.getMateria());
+      proyecto1.setLink(proyecto.getLink());
+      proyecto1.setImagen(proyecto.getImagen());
+      proyecto1.setIntegrantes(proyecto.getIntegrantes());
+      ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, proyecto.getMateria().getNombre());
+      proyectosResponse.add(proyectoResp);
+    }
+    return proyectosResponse;
 
+  }
+
+  // optener todas las materias
+  public List<MateriaResponse> getMaterias() {
+    List<Materia> materias = materiaRepository.findAll();
+    List<MateriaResponse> materiasResponse = new ArrayList<>();
+    for (Materia materia : materias) {
+      materiasResponse.add(new MateriaResponse(materia.getNombre()));
+    }
+    return materiasResponse;
   }
 
   // optener un proyecto por id
@@ -54,17 +86,28 @@ public class ProyectoService {
   }
 
   // Registrar un proyecto
-  public Proyecto registrarProyecto(Proyecto proyecto) {
+  public ProyectoResponse registrarProyecto(Proyecto proyecto, ProyectoRequest proyectoRequest) {
+
+    Optional<Materia> materia = materiaRepository.findByNombre(proyectoRequest.getMateria());
+
+    if (!materia.isPresent()) {
+      throw new BadRequestException(
+          new ErrorResponse("La materia con nombre " + proyectoRequest.getMateria() + " no existe"));
+    }
+
     Optional<Proyecto> proyectoExistente = proyectoRepository.findByTitulo(proyecto.getTitulo());
     if (proyectoExistente.isPresent()) {
       throw new BadRequestException(
           new ErrorResponse("El proyecto con titulo " + proyecto.getTitulo() + " ya existe"));
     } else {
-      return proyectoRepository.save(proyecto);
+      proyecto.setMateria(materia.get());
+      proyectoRepository.save(proyecto);
+
+      ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria().getNombre());
+      return proyectoResponse;
     }
   }
 
-  // CONTINUAR ACA!!!!!
   // Eliminar un proyecto
   public void eliminarProyecto(Long id) {
     Optional<Proyecto> proyecto = proyectoRepository.findById(id);
@@ -230,20 +273,21 @@ public class ProyectoService {
   }
 
   // listar las materias que hay en la base de datos
-  public List<MateriaResponse> getMaterias() {
-    List<String> materias = proyectoRepository.findMaterias();
-    if (materias.isEmpty()) {
-      throw new BadRequestException(new ErrorResponse("No hay materias en la base de datos"));
-    }
+  // public List<MateriaResponse> getMaterias() {
+  // List<String> materias = proyectoRepository.findMaterias();
+  // if (materias.isEmpty()) {
+  // throw new BadRequestException(new ErrorResponse("No hay materias en la base
+  // de datos"));
+  // }
 
-    List<MateriaResponse> materiasResponse = new ArrayList<>();
-    for (String materia : materias) {
-      MateriaResponse materiaResponse = new MateriaResponse();
-      materiaResponse.setMateria(materia);
-      materiasResponse.add(materiaResponse);
-    }
+  // List<MateriaResponse> materiasResponse = new ArrayList<>();
+  // for (String materia : materias) {
+  // MateriaResponse materiaResponse = new MateriaResponse();
+  // materiaResponse.setMateria(materia);
+  // materiasResponse.add(materiaResponse);
+  // }
 
-    return materiasResponse;
-  }
+  // return materiasResponse;
+  // }
 
 }

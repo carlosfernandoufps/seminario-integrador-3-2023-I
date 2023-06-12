@@ -28,7 +28,22 @@ public class GlobalExceptionHandler {
         .stream()
         .map(error -> error.getField() + ": " + error.getDefaultMessage())
         .collect(Collectors.joining(", "));
-    return new MensajeResponse(mensaje);  
+    return new MensajeResponse(mensaje);
   }
+
+  // @ExceptionHandler(MethodArgumentNotValidException.class)
+  // public ResponseEntity<String>
+  // handleValidationException(MethodArgumentNotValidException ex) {
+  // // Aquí puedes realizar cualquier lógica adicional que necesites
+
+  // // Obtener los mensajes de error de la excepción
+  // String errorMessage = ex.getBindingResult().getAllErrors()
+  // .stream()
+  // .map(error -> error.getDefaultMessage())
+  // .collect(Collectors.joining(", "));
+
+  // // Devolver una respuesta con el mensaje de error
+  // return ResponseEntity.badRequest().body(errorMessage);
+  // }
 
 }
