@@ -15,18 +15,23 @@ import lombok.Setter;
 // @Table(name = "proyecto_integrantes")
 public class IntegranteProyecto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "codigo_integrante")
-    private Usuario integrante;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonBackReference
+  @JoinColumn(name = "codigo_integrante")
+  private Usuario integrante;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name = "id_proyecto")
-    private Proyecto proyecto;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonBackReference
+  @JoinColumn(name = "id_proyecto")
+  private Proyecto proyecto;
+
+  public String toString() {
+    return "IntegranteProyecto(id=" + this.getId() + ", integrante=" + this.getIntegrante() + ", proyecto="
+        + this.getProyecto() + ")";
+  }
 
 }

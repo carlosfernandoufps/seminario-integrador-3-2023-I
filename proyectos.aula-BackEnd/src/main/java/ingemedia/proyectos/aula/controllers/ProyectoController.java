@@ -30,12 +30,19 @@ public class ProyectoController {
   // obtener todos los proyectos
   @GetMapping
   public List<ProyectoResponse> getProyectos() {
-    return proyectoService.getProyectos();
+    try {
+      List<ProyectoResponse> proyectos = proyectoService.getProyectos();
+      return proyectos;
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+      return null;
+    }
+
   }
 
   // obtener un proyecto por id
   @GetMapping("/{id}")
-  public Proyecto getProyecto(@PathVariable Long id) {
+  public ProyectoResponse getProyecto(@PathVariable Long id) {
     return proyectoService.getProyecto(id);
   }
 
@@ -82,9 +89,9 @@ public class ProyectoController {
 
   // listar los proyectos que tiene un integrante
   @GetMapping("/integrante/{codigoIntegrante}")
-  public List<Map<String, Object>> getProyectosByCodigoIntegrante(@PathVariable String codigoIntegrante) {
+  public List<ProyectoResponse> getProyectosByCodigoIntegrante(@PathVariable String codigoIntegrante) {
 
-    return proyectoService.getProyectosByCodigoIntegrante(codigoIntegrante);
+    return proyectoService.getIntegranteProyectos(codigoIntegrante);
 
   }
 

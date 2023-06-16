@@ -8,13 +8,9 @@ import ingemedia.proyectos.aula.exceptions.BadRequestException;
 //import com.example.parqueaderoapi.user.UserRepository;
 import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
-
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -39,7 +35,7 @@ public class AuthenticationService {
         .build();
     repository.save(user);
     // var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
+    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido());
     // saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
         .token(jwtToken)
@@ -61,15 +57,23 @@ public class AuthenticationService {
     }
     var user = repository.findByCorreo(request.getCorreo())
         .orElseThrow();
+    System.out.println("user: " + user);
 
     // Usuario user = usuario.get();
-    var jwtToken = jwtService.generateToken(user);
+    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido());
     // revokeAllUserTokens(user);
     // saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
         .token(jwtToken)
         .build();
 
+  }
+
+  // cerrar sesion
+
+  public void logout(HttpServletRequest request) {
+    // invalidar la sesion actual
+    request.getSession().invalidate();
   }
 
 }

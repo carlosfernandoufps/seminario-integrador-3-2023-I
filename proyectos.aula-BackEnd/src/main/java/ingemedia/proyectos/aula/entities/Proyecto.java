@@ -2,6 +2,7 @@ package ingemedia.proyectos.aula.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ingemedia.proyectos.aula.request.ProyectoRequest;
 import jakarta.persistence.*;
@@ -57,6 +58,7 @@ public class Proyecto {
   @NotBlank
   private String imagen;
 
+  @JsonIgnore
   @OneToMany(orphanRemoval = true, mappedBy = "proyecto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<IntegranteProyecto> integrantes = new ArrayList<>();
 
@@ -73,5 +75,7 @@ public class Proyecto {
   public void addIntegrante(IntegranteProyecto integrante) {
     this.integrantes.add(integrante);
   }
+
+  
 
 }

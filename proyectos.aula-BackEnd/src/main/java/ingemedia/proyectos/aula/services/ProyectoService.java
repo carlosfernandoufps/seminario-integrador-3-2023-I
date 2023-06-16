@@ -12,6 +12,7 @@ import ingemedia.proyectos.aula.request.ProyectoRequest;
 import ingemedia.proyectos.aula.request.Rol;
 import ingemedia.proyectos.aula.repositories.ProyectoRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
+import ingemedia.proyectos.aula.responses.IntegranteResponse;
 import ingemedia.proyectos.aula.responses.MateriaResponse;
 import ingemedia.proyectos.aula.responses.ProyectoResponse;
 
@@ -45,7 +46,6 @@ public class ProyectoService {
   public List<ProyectoResponse> getProyectos() {
     List<Proyecto> proyectos = proyectoRepository.findAll();
     List<ProyectoResponse> proyectosResponse = new ArrayList<>();
-    // System.out.println("ACA LLEGA");
     for (Proyecto proyecto : proyectos) {
       Proyecto proyecto1 = new Proyecto();
       proyecto1.setId(proyecto.getId());
@@ -57,7 +57,12 @@ public class ProyectoService {
       proyecto1.setLink(proyecto.getLink());
       proyecto1.setImagen(proyecto.getImagen());
       proyecto1.setIntegrantes(proyecto.getIntegrantes());
-      ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, proyecto.getMateria().getNombre());
+      // System.out.println("Integrantes: " + proyecto1.getIntegrantes());
+      List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto1.getId());
+      // System.out.println("INTES: " + integrantes.size());
+      Long id = proyecto.getMateria().getId();
+      String nombre = proyecto.getMateria().getNombre();
+      ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, new Materia(id, nombre), integrantes);
       proyectosResponse.add(proyectoResp);
     }
     return proyectosResponse;
@@ -75,10 +80,16 @@ public class ProyectoService {
   }
 
   // optener un proyecto por id
-  public Proyecto getProyecto(Long id) {
+  public ProyectoResponse getProyecto(Long id) {
     Optional<Proyecto> proyecto = proyectoRepository.findById(id);
     if (proyecto.isPresent()) {
-      return proyecto.get();
+      ProyectoResponse proyectoResponse = new ProyectoResponse();
+      proyectoResponse.setProyecto(proyecto.get());
+      proyectoResponse
+          .setMateria(new Materia(proyecto.get().getMateria().getId(), proyecto.get().getMateria().getNombre()));
+      List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto.get().getId());
+      proyectoResponse.setIntegrantes(integrantes);
+      return proyectoResponse;
     } else {
       throw new BadRequestException(new ErrorResponse("El proyecto con id " + id + " no existe"));
     }
@@ -103,7 +114,7 @@ public class ProyectoService {
       proyecto.setMateria(materia.get());
       proyectoRepository.save(proyecto);
 
-      ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria().getNombre());
+      ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria(), null);
       return proyectoResponse;
     }
   }
@@ -272,22 +283,67 @@ public class ProyectoService {
     integranteProyectoRepository.save(integranteProyecto);
   }
 
-  // listar las materias que hay en la base de datos
-  // public List<MateriaResponse> getMaterias() {
-  // List<String> materias = proyectoRepository.findMaterias();
-  // if (materias.isEmpty()) {
-  // throw new BadRequestException(new ErrorResponse("No hay materias en la base
-  // de datos"));
-  // }
+  // Listar los integrantes de un proyecto
+  private List<IntegranteResponse> getProyectoIntegrantes(Long idProyecto) {
+    Optional<Proyecto> proyecto = proyectoRepository.findById(idProyecto);
 
-  // List<MateriaResponse> materiasResponse = new ArrayList<>();
-  // for (String materia : materias) {
-  // MateriaResponse materiaResponse = new MateriaResponse();
-  // materiaResponse.setMateria(materia);
-  // materiasResponse.add(materiaResponse);
-  // }
+    if (!proyecto.isPresent()) {
+      throw new BadRequestException(new ErrorResponse("El proyecto con id " +
+          idProyecto + " no existe"));
+    }
 
-  // return materiasResponse;
-  // }
+    List<IntegranteProyecto> integrantes = proyecto.get().getIntegrantes();
+
+    List<IntegranteResponse> integrantesResponse = new ArrayList<>();
+    for (IntegranteProyecto integrante : integrantes) {
+      IntegranteResponse integranteResponse = new IntegranteResponse();
+      integranteResponse.setCodigo(integrante.getIntegrante().getCodigo());
+      integranteResponse.setNombre(integrante.getIntegrante().getNombre());
+      integranteResponse.setApellido(integrante.getIntegrante().getApellido());
+      integranteResponse.setCorreo(integrante.getIntegrante().getCorreo());
+      integrantesResponse.add(integranteResponse);
+    }
+
+    return integrantesResponse;
+  }
+
+  // listar los proyectos de un integrante
+  public List<ProyectoResponse> getIntegranteProyectos(String codigo) {
+    Optional<Usuario> integrante = integranteRepository.findByCodigo(codigo);
+
+    if (!integrante.isPresent()) {
+      throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+          codigo + " no existe"));
+    }
+
+    List<IntegranteProyecto> proyectoIntegrante = integrante.get().getProyectos();
+    if (proyectoIntegrante.isEmpty()) {
+      throw new BadRequestException(new ErrorResponse("El integrante con codigo " +
+          codigo + " no tiene proyectos"));
+    }
+
+    List<ProyectoResponse> proyectosResponse1 = new ArrayList<>();
+    for (IntegranteProyecto ip : proyectoIntegrante) {
+      ProyectoResponse proyectoResponse = new ProyectoResponse();
+      Proyecto pro = new Proyecto();
+      pro.setId(ip.getProyecto().getId());
+      pro.setTitulo(ip.getProyecto().getTitulo());
+      pro.setFecha(ip.getProyecto().getFecha());
+      pro.setSemestre(ip.getProyecto().getSemestre());
+      pro.setDescripcion(ip.getProyecto().getDescripcion());
+      pro.setLink(ip.getProyecto().getLink());
+      pro.setImagen(ip.getProyecto().getImagen());
+      proyectoResponse.setProyecto(pro);
+      Long idMateria = ip.getProyecto().getMateria().getId();
+      String nombreMateria = ip.getProyecto().getMateria().getNombre();
+      proyectoResponse.setMateria(new Materia(idMateria, nombreMateria));
+      List<IntegranteResponse> integrantes = getProyectoIntegrantes(ip.getProyecto().getId());
+      proyectoResponse.setIntegrantes(integrantes);
+      // proyectoResponse.setIntegrantes(null);
+
+      proyectosResponse1.add(proyectoResponse);
+    }
+    return proyectosResponse1;
+  }
 
 }

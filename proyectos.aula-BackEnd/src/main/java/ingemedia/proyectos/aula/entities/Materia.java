@@ -44,4 +44,14 @@ public class Materia {
     this.nombre = materiaRequest.getNombre();
   }
 
+  public Materia(long id, String nombre) {
+    this.id = id;
+    this.nombre = nombre;
+  }
+
+  // crear toString
+  public String toString() {
+    return "Materia [id=" + id + ", nombre=" + nombre + "]";
+  }
+
 }

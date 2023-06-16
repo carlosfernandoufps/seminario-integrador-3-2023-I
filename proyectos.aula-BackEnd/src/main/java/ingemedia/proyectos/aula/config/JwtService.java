@@ -29,13 +29,16 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails) {
-
+  public String generateToken(UserDetails userDetails, String codigo, String nombre, String apellido) {
     Map<String, Object> claims = new HashMap<>();
     System.out.println("info pal usuario " + userDetails);
     System.out.println("ROL? : " + userDetails.getAuthorities().stream().findFirst().get().getAuthority());
+    System.out.println("Usuario? :" + userDetails.getClass().toString());
     claims.put("rol", userDetails.getAuthorities().stream().findFirst().get().getAuthority());
-
+    // agregar el codigo de usuario al token
+    claims.put("codigo", codigo);
+    claims.put("nombre", nombre);
+    claims.put("apellido", apellido);
     return generateToken(claims, userDetails);
   }
 

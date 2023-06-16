@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 // @PreAuthorize("hasRole('ADMIN')")
@@ -20,6 +22,13 @@ public class AuthenticationController {
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request) {
     return ResponseEntity.ok(service.authenticate(request));
+  }
+
+  @PostMapping("/logout")
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    System.out.println("Aca llega");
+    service.logout(request);
+    return ResponseEntity.ok("Sesión cerrada exitosamente");
   }
 
 }

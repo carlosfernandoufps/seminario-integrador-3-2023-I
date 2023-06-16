@@ -33,86 +33,97 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "usuario")
 public class Usuario implements UserDetails {
 
-    @Id
-    private String codigo;
+  @Id
+  private String codigo;
 
-    @NotNull
-    @NotBlank
-    private String nombre;
+  @NotNull
+  @NotBlank
+  private String nombre;
 
-    @NotNull
-    @NotBlank
-    private String apellido;
+  @NotNull
+  @NotBlank
+  private String apellido;
 
-    @NotNull
-    @NotBlank
-    @Email
-    private String correo;
+  @NotNull
+  @NotBlank
+  @Email
+  private String correo;
 
-    @NotNull
-    @NotBlank
-    @JsonIgnore
-    private String password;
+  @NotNull
+  @NotBlank
+  @JsonIgnore
+  private String password;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Rol rol;
+  @NotNull
+  @Enumerated(EnumType.STRING)
+  private Rol rol;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "integrante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<IntegranteProyecto> proyectos = new ArrayList<>();
+  @OneToMany(orphanRemoval = true, mappedBy = "integrante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<IntegranteProyecto> proyectos = new ArrayList<>();
 
-    public Usuario(IntegranteRequest integranteRequest) {
-        this.codigo = integranteRequest.getCodigo();
-        this.nombre = integranteRequest.getNombre();
-        this.apellido = integranteRequest.getApellido();
-        this.correo = integranteRequest.getCorreo();
-        this.rol = integranteRequest.getRol();
-        this.password = integranteRequest.getPassword();
-    }
+  public Usuario(IntegranteRequest integranteRequest) {
+    this.codigo = integranteRequest.getCodigo();
+    this.nombre = integranteRequest.getNombre();
+    this.apellido = integranteRequest.getApellido();
+    this.correo = integranteRequest.getCorreo();
+    this.rol = integranteRequest.getRol();
+    this.password = integranteRequest.getPassword();
+  }
 
-    // agregar proyectos
-    public void addProyecto(IntegranteProyecto proyecto) {
-        this.proyectos.add(proyecto);
-    }
+  // agregar proyectos
+  public void addProyecto(IntegranteProyecto proyecto) {
+    this.proyectos.add(proyecto);
+  }
 
-    @JsonIgnore
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.rol.name()));
-    }
+  @JsonIgnore
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(this.rol.name()));
+  }
 
-    @JsonIgnore
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
+  @JsonIgnore
+  @Override
+  public String getPassword() {
+    return this.password;
+  }
 
-    @Override
-    public String getUsername() {
-        return correo;
-    }
+  @Override
+  public String getUsername() {
+    return correo;
+  }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @JsonIgnore
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @JsonIgnore
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @JsonIgnore
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+  @JsonIgnore
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
+
+  // crear el metodo toString
+  public String toString() {
+    return "Usuario{" +
+        "codigo=" + codigo +
+        ", nombre=" + nombre +
+        ", apellido=" + apellido +
+        ", correo=" + correo +
+        ", rol=" + rol +
+        "}";
+  }
 }
