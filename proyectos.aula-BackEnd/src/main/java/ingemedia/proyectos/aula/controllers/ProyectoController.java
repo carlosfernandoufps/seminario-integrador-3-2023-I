@@ -56,15 +56,15 @@ public class ProyectoController {
 
   // actualizar un proyecto
   @PutMapping("/{id}")
-  public Proyecto actualizarProyecto(@PathVariable Long id, @RequestBody @Valid ProyectoRequest proyecto) {
-    return proyectoService.actualizarProyecto(id, new Proyecto(proyecto));
+  public ProyectoResponse actualizarProyecto(@PathVariable Long id, @RequestBody @Valid ProyectoRequest proyecto) {
+    return proyectoService.actualizarProyecto(id, new Proyecto(proyecto), proyecto);
   }
 
   // Eliminar un proyecto
   @DeleteMapping("/{id}")
   public MensajeResponse eliminarProyecto(@PathVariable Long id) {
     proyectoService.eliminarProyecto(id);
-    return new MensajeResponse("El integrante con el codigo " + id + " fue eliminado");
+    return new MensajeResponse("El proyecto con el codigo " + id + " fue eliminado");
   }
 
   // Obtener Proyectos por semestre

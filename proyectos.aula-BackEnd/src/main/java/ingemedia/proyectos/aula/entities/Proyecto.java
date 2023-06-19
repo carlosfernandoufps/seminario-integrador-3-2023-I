@@ -77,4 +77,11 @@ public class Proyecto {
     this.integrantes.add(integrante);
   }
 
+  // toString
+  // public String toString() {
+  // return "Proyecto: " + this.titulo + " - " + this.fecha + " - " +
+  // this.semestre + " - " + this.descripcion + " - "
+  // + this.link + " - " + this.imagen;
+  // }
+
 }

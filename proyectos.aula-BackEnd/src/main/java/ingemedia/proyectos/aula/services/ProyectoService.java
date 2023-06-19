@@ -112,9 +112,6 @@ public class ProyectoService {
     Optional<Usuario> usuariolggeado = integranteRepository.findByCorreo(correo);
     Usuario usuario = usuariolggeado.get();
     Rol rol = usuario.getRol();
-    if (rol == Rol.ADMIN) {
-      throw new AccessDeniedException("El admin no puede crear proyectos");
-    }
 
     Optional<Materia> materia = materiaRepository.findById(proyectoRequest.getIdMateria());
 
@@ -130,8 +127,12 @@ public class ProyectoService {
     } else {
       proyecto.setMateria(materia.get());
       proyectoRepository.save(proyecto);
-      agregarIntegranteAProyecto(proyecto.getId(), usuario.getCodigo());
-
+      if (rol != Rol.ADMIN) {
+        agregarIntegranteAProyecto(proyecto.getId(), usuario.getCodigo());
+      }
+      List<IntegranteResponse> integrantes = new ArrayList<>();
+      integrantes.add(new IntegranteResponse(usuario.getCodigo(), usuario.getNombre(), usuario.getApellido(),
+          usuario.getCorreo()));
       // agregar los integrantes al proyecto
       for (String codigoIntegrante : codigosIntegrantes) {
         Optional<Usuario> integranteOptional = integranteRepository.findByCodigo(codigoIntegrante);
@@ -142,12 +143,10 @@ public class ProyectoService {
         if (integranteOptional.isPresent()) {
           Usuario integrante = integranteOptional.get();
           agregarIntegranteAProyecto(proyecto.getId(), integrante.getCodigo());
+          integrantes.add(new IntegranteResponse(integrante.getCodigo(), integrante.getNombre(),
+              integrante.getApellido(), integrante.getCorreo()));
         }
       }
-
-      List<IntegranteResponse> integrantes = new ArrayList<>();
-      integrantes.add(new IntegranteResponse(usuario.getCodigo(), usuario.getNombre(), usuario.getApellido(),
-          usuario.getCorreo()));
 
       ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria(), integrantes);
       return proyectoResponse;
@@ -165,10 +164,16 @@ public class ProyectoService {
   }
 
   // Actualizar un proyecto
-  public Proyecto actualizarProyecto(Long id, Proyecto proyecto) {
+  public ProyectoResponse actualizarProyecto(Long id, Proyecto proyecto, ProyectoRequest proyectoRequest) {
+
     Optional<Proyecto> proyectoOptional = proyectoRepository.findById(id);
     if (!proyectoOptional.isPresent()) {
       throw new BadRequestException(new ErrorResponse("El Proyecto con id " + id + " no existe"));
+    }
+    Optional<Materia> materia = materiaRepository.findById(proyectoRequest.getIdMateria());
+    if (!materia.isPresent()) {
+      throw new BadRequestException(
+          new ErrorResponse("La materia con id " + proyectoRequest.getIdMateria() + " no existe"));
     }
     Proyecto proyectoExistente = proyectoOptional.get();
 
@@ -178,11 +183,17 @@ public class ProyectoService {
     proyectoExistente.setFecha(proyecto.getFecha());
     proyectoExistente.setLink(proyecto.getLink());
     proyectoExistente.setSemestre(proyecto.getSemestre());
-    proyectoExistente.setMateria(proyecto.getMateria());
+    proyectoExistente.setMateria(materia.get());
 
     Proyecto proyectoActualizado = proyectoRepository.save(proyectoExistente);
+    ProyectoResponse proyectoResponse = new ProyectoResponse();
+    proyectoResponse.setProyecto(proyectoActualizado);
+    proyectoResponse.setMateria(new Materia(proyectoActualizado.getMateria().getId(),
+        proyectoActualizado.getMateria().getNombre()));
+    List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyectoActualizado.getId());
+    proyectoResponse.setIntegrantes(integrantes);
 
-    return proyectoActualizado;
+    return proyectoResponse;
 
   }
 

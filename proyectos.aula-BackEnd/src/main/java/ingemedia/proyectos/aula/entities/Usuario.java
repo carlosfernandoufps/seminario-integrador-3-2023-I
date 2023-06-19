@@ -59,6 +59,7 @@ public class Usuario implements UserDetails {
   private Rol rol;
 
   @OneToMany(orphanRemoval = true, mappedBy = "integrante", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnore
   private List<IntegranteProyecto> proyectos = new ArrayList<>();
 
   public Usuario(IntegranteRequest integranteRequest) {
@@ -95,6 +96,7 @@ public class Usuario implements UserDetails {
   }
 
   @Override
+  @JsonIgnore
   public String getUsername() {
     return correo;
   }
