@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +22,7 @@ public class ProyectoRequest {
   private LocalDate fecha;
 
   @NotNull
-  @NotBlank
-  private String materia;
+  private Long idMateria;
 
   @NotNull
   @NotBlank
@@ -39,5 +39,7 @@ public class ProyectoRequest {
   @NotNull
   @NotBlank
   private String imagen;
+
+  private List<String> codigosIntegrantes;
 
 }

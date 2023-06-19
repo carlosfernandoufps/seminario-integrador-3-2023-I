@@ -49,7 +49,8 @@ public class ProyectoController {
   // Registrar un proyecto
   @PostMapping
   public ProyectoResponse registrarProyecto(@RequestBody @Valid ProyectoRequest proyecto) {
-    ProyectoResponse proyectoNuevo = proyectoService.registrarProyecto(new Proyecto(proyecto), proyecto);
+    ProyectoResponse proyectoNuevo = proyectoService.registrarProyecto(new Proyecto(proyecto), proyecto,
+        proyecto.getCodigosIntegrantes());
     return proyectoNuevo;
   }
 
@@ -68,20 +69,20 @@ public class ProyectoController {
 
   // Obtener Proyectos por semestre
   @GetMapping("/semestre/{semestre}")
-  public List<Proyecto> getProyectosBySemestre(@PathVariable String semestre) {
+  public List<ProyectoResponse> getProyectosBySemestre(@PathVariable String semestre) {
     return proyectoService.getProyectosBySemestre(semestre);
   }
 
   // Optener Proyectos por materia
-  @GetMapping("/materia/{materia}")
-  public List<Proyecto> getProyectosByMateria(@PathVariable String materia) {
-    return proyectoService.getProyectosByMateria(materia);
+  @GetMapping("/materia/{idMateria}")
+  public List<ProyectoResponse> getProyectosByMateria(@PathVariable Long idMateria) {
+    return proyectoService.getProyectosByMateria(idMateria);
   }
 
   @GetMapping("/materias")
-  public List<Proyecto> getProyectosByMaterias(@RequestParam List<String> materias) {
-    Set<Proyecto> proyectoSet = new HashSet<>();
-    for (String materia : materias) {
+  public List<ProyectoResponse> getProyectosByMaterias(@RequestParam List<Long> materias) {
+    Set<ProyectoResponse> proyectoSet = new HashSet<>();
+    for (Long materia : materias) {
       proyectoSet.addAll(proyectoService.getProyectosByMateria(materia));
     }
     return proyectoSet.stream().toList();
@@ -97,7 +98,7 @@ public class ProyectoController {
 
   // busqueda de proyecto por titulo (ignorando mayusculas y minusculas y acentos)
   @GetMapping("/titulo/{titulo}")
-  public List<Proyecto> getProyectosByTitulo(@PathVariable String titulo) {
+  public List<ProyectoResponse> getProyectosByTitulo(@PathVariable String titulo) {
     return proyectoService.getProyectosByTitulo(titulo);
   }
 
@@ -106,7 +107,7 @@ public class ProyectoController {
   // solicitud en postman para probar la anterior funcion
   // http://localhost:8080/proyectos/fecha?fecha=2020-01-01
   @GetMapping("/fecha/{fecha}")
-  public List<Proyecto> getProyectosByFecha(@PathVariable LocalDate fecha) {
+  public List<ProyectoResponse> getProyectosByFecha(@PathVariable LocalDate fecha) {
     return proyectoService.getProyectosByFecha(fecha);
   }
 

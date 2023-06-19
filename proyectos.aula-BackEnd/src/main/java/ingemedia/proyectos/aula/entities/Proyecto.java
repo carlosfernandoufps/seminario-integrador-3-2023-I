@@ -40,6 +40,7 @@ public class Proyecto {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_materia")
   @JsonBackReference
+  @JsonIgnore
   private Materia materia;
 
   @NotNull
@@ -75,7 +76,5 @@ public class Proyecto {
   public void addIntegrante(IntegranteProyecto integrante) {
     this.integrantes.add(integrante);
   }
-
-  
 
 }

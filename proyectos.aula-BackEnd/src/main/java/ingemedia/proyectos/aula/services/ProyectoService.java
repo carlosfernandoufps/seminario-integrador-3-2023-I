@@ -17,6 +17,9 @@ import ingemedia.proyectos.aula.responses.MateriaResponse;
 import ingemedia.proyectos.aula.responses.ProyectoResponse;
 
 import org.hibernate.type.descriptor.java.LocalDateJavaType;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -74,7 +77,7 @@ public class ProyectoService {
     List<Materia> materias = materiaRepository.findAll();
     List<MateriaResponse> materiasResponse = new ArrayList<>();
     for (Materia materia : materias) {
-      materiasResponse.add(new MateriaResponse(materia.getNombre()));
+      materiasResponse.add(new MateriaResponse(materia.getId(), materia.getNombre()));
     }
     return materiasResponse;
   }
@@ -97,13 +100,27 @@ public class ProyectoService {
   }
 
   // Registrar un proyecto
-  public ProyectoResponse registrarProyecto(Proyecto proyecto, ProyectoRequest proyectoRequest) {
+  public ProyectoResponse registrarProyecto(Proyecto proyecto, ProyectoRequest proyectoRequest,
+      List<String> codigosIntegrantes) {
 
-    Optional<Materia> materia = materiaRepository.findByNombre(proyectoRequest.getMateria());
+    // optener la informacion del token
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    // optener el correo del usuario
+    String correo = authentication.getName();
+    System.out.println("CORREO: " + correo);
+    // optener el usuario
+    Optional<Usuario> usuariolggeado = integranteRepository.findByCorreo(correo);
+    Usuario usuario = usuariolggeado.get();
+    Rol rol = usuario.getRol();
+    if (rol == Rol.ADMIN) {
+      throw new AccessDeniedException("El admin no puede crear proyectos");
+    }
+
+    Optional<Materia> materia = materiaRepository.findById(proyectoRequest.getIdMateria());
 
     if (!materia.isPresent()) {
       throw new BadRequestException(
-          new ErrorResponse("La materia con nombre " + proyectoRequest.getMateria() + " no existe"));
+          new ErrorResponse("La materia con id " + proyectoRequest.getIdMateria() + " no existe"));
     }
 
     Optional<Proyecto> proyectoExistente = proyectoRepository.findByTitulo(proyecto.getTitulo());
@@ -113,8 +130,26 @@ public class ProyectoService {
     } else {
       proyecto.setMateria(materia.get());
       proyectoRepository.save(proyecto);
+      agregarIntegranteAProyecto(proyecto.getId(), usuario.getCodigo());
 
-      ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria(), null);
+      // agregar los integrantes al proyecto
+      for (String codigoIntegrante : codigosIntegrantes) {
+        Optional<Usuario> integranteOptional = integranteRepository.findByCodigo(codigoIntegrante);
+        if (!integranteOptional.isPresent()) {
+          throw new BadRequestException(
+              new ErrorResponse("El integrante con codigo " + codigoIntegrante + " no existe"));
+        }
+        if (integranteOptional.isPresent()) {
+          Usuario integrante = integranteOptional.get();
+          agregarIntegranteAProyecto(proyecto.getId(), integrante.getCodigo());
+        }
+      }
+
+      List<IntegranteResponse> integrantes = new ArrayList<>();
+      integrantes.add(new IntegranteResponse(usuario.getCodigo(), usuario.getNombre(), usuario.getApellido(),
+          usuario.getCorreo()));
+
+      ProyectoResponse proyectoResponse = new ProyectoResponse(proyecto, proyecto.getMateria(), integrantes);
       return proyectoResponse;
     }
   }
@@ -152,20 +187,67 @@ public class ProyectoService {
   }
 
   // optener proyectos por semestre
-  public List<Proyecto> getProyectosBySemestre(String semestre) {
+  public List<ProyectoResponse> getProyectosBySemestre(String semestre) {
     Optional<List<Proyecto>> proyectos = proyectoRepository.findBySemestre(semestre);
     if (proyectos.isPresent()) {
-      return proyectos.get();
+      List<ProyectoResponse> proyectosResponse = new ArrayList<>();
+
+      for (Proyecto proyecto : proyectos.get()) {
+        Proyecto proyecto1 = new Proyecto();
+        proyecto1.setId(proyecto.getId());
+        proyecto1.setTitulo(proyecto.getTitulo());
+        proyecto1.setFecha(proyecto.getFecha());
+        proyecto1.setSemestre(proyecto.getSemestre());
+        proyecto1.setDescripcion(proyecto.getDescripcion());
+        proyecto1.setMateria(proyecto.getMateria());
+        proyecto1.setLink(proyecto.getLink());
+        proyecto1.setImagen(proyecto.getImagen());
+        proyecto1.setIntegrantes(proyecto.getIntegrantes());
+        // System.out.println("Integrantes: " + proyecto1.getIntegrantes());
+        List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto1.getId());
+        // System.out.println("INTES: " + integrantes.size());
+        Long id = proyecto.getMateria().getId();
+        String nombre = proyecto.getMateria().getNombre();
+        ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, new Materia(id, nombre), integrantes);
+        proyectosResponse.add(proyectoResp);
+      }
+      return proyectosResponse;
+
     } else {
       throw new BadRequestException(new ErrorResponse("No hay proyectos para el semestre " + semestre));
     }
   }
 
   // optener proyectos por materia
-  public List<Proyecto> getProyectosByMateria(String materia) {
-    Optional<List<Proyecto>> proyectos = proyectoRepository.findByMateria(materia);
+  public List<ProyectoResponse> getProyectosByMateria(Long idMateria) {
+    Optional<Materia> materia = materiaRepository.findById(idMateria);
+    if (!materia.isPresent()) {
+      throw new BadRequestException(new ErrorResponse("La materia con id " + idMateria + " no existe"));
+    }
+    Optional<List<Proyecto>> proyectos = proyectoRepository.findByMateria(materia.get());
     if (proyectos.isPresent()) {
-      return proyectos.get();
+      List<ProyectoResponse> proyectosResponse = new ArrayList<>();
+
+      for (Proyecto proyecto : proyectos.get()) {
+        Proyecto proyecto1 = new Proyecto();
+        proyecto1.setId(proyecto.getId());
+        proyecto1.setTitulo(proyecto.getTitulo());
+        proyecto1.setFecha(proyecto.getFecha());
+        proyecto1.setSemestre(proyecto.getSemestre());
+        proyecto1.setDescripcion(proyecto.getDescripcion());
+        proyecto1.setMateria(proyecto.getMateria());
+        proyecto1.setLink(proyecto.getLink());
+        proyecto1.setImagen(proyecto.getImagen());
+        proyecto1.setIntegrantes(proyecto.getIntegrantes());
+        // System.out.println("Integrantes: " + proyecto1.getIntegrantes());
+        List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto1.getId());
+        // System.out.println("INTES: " + integrantes.size());
+        Long id = proyecto.getMateria().getId();
+        String nombre = proyecto.getMateria().getNombre();
+        ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, new Materia(id, nombre), integrantes);
+        proyectosResponse.add(proyectoResp);
+      }
+      return proyectosResponse;
     } else {
       throw new BadRequestException(new ErrorResponse("No hay proyectos para la materia " + materia));
     }
@@ -212,26 +294,70 @@ public class ProyectoService {
   }
 
   // busqueda de proyecto por titulo (ignorando mayusculas y minusculas y acentos)
-  public List<Proyecto> getProyectosByTitulo(String titulo) {
+  public List<ProyectoResponse> getProyectosByTitulo(String titulo) {
     Optional<List<Proyecto>> proyectos = proyectoRepository.findByTituloContainingIgnoreCase(titulo);
 
     if (proyectos.get().isEmpty()) {
       throw new BadRequestException(new ErrorResponse("No hay proyectos con el titulo " + titulo));
     }
 
-    return proyectos.get();
+    List<ProyectoResponse> proyectosResponse = new ArrayList<>();
+
+    for (Proyecto proyecto : proyectos.get()) {
+      Proyecto proyecto1 = new Proyecto();
+      proyecto1.setId(proyecto.getId());
+      proyecto1.setTitulo(proyecto.getTitulo());
+      proyecto1.setFecha(proyecto.getFecha());
+      proyecto1.setSemestre(proyecto.getSemestre());
+      proyecto1.setDescripcion(proyecto.getDescripcion());
+      proyecto1.setMateria(proyecto.getMateria());
+      proyecto1.setLink(proyecto.getLink());
+      proyecto1.setImagen(proyecto.getImagen());
+      proyecto1.setIntegrantes(proyecto.getIntegrantes());
+      // System.out.println("Integrantes: " + proyecto1.getIntegrantes());
+      List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto1.getId());
+      // System.out.println("INTES: " + integrantes.size());
+      Long id = proyecto.getMateria().getId();
+      String nombre = proyecto.getMateria().getNombre();
+      ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, new Materia(id, nombre), integrantes);
+      proyectosResponse.add(proyectoResp);
+    }
+
+    return proyectosResponse;
   }
 
   // Busqueda por rango de fechas, desde la fecha que se ingresa hasta la fecha
   // actual
-  public List<Proyecto> getProyectosByFecha(LocalDate fecha) {
+  public List<ProyectoResponse> getProyectosByFecha(LocalDate fecha) {
     Optional<List<Proyecto>> proyectos = proyectoRepository.findByFechaGreaterThanEqual(fecha);
 
     if (proyectos.get().isEmpty()) {
       throw new BadRequestException(new ErrorResponse("No hay proyectos con fecha mayor o igual a " + fecha));
     }
 
-    return proyectos.get();
+    List<ProyectoResponse> proyectosResponse = new ArrayList<>();
+
+    for (Proyecto proyecto : proyectos.get()) {
+      Proyecto proyecto1 = new Proyecto();
+      proyecto1.setId(proyecto.getId());
+      proyecto1.setTitulo(proyecto.getTitulo());
+      proyecto1.setFecha(proyecto.getFecha());
+      proyecto1.setSemestre(proyecto.getSemestre());
+      proyecto1.setDescripcion(proyecto.getDescripcion());
+      proyecto1.setMateria(proyecto.getMateria());
+      proyecto1.setLink(proyecto.getLink());
+      proyecto1.setImagen(proyecto.getImagen());
+      proyecto1.setIntegrantes(proyecto.getIntegrantes());
+      // System.out.println("Integrantes: " + proyecto1.getIntegrantes());
+      List<IntegranteResponse> integrantes = getProyectoIntegrantes(proyecto1.getId());
+      // System.out.println("INTES: " + integrantes.size());
+      Long id = proyecto.getMateria().getId();
+      String nombre = proyecto.getMateria().getNombre();
+      ProyectoResponse proyectoResp = new ProyectoResponse(proyecto1, new Materia(id, nombre), integrantes);
+      proyectosResponse.add(proyectoResp);
+    }
+
+    return proyectosResponse;
   }
 
   // agregar un integrante a un proyecto

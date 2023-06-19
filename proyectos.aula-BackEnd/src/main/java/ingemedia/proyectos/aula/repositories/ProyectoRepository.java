@@ -1,5 +1,6 @@
 package ingemedia.proyectos.aula.repositories;
 
+import ingemedia.proyectos.aula.entities.Materia;
 import ingemedia.proyectos.aula.entities.Proyecto;
 import ingemedia.proyectos.aula.responses.MateriaResponse;
 
@@ -19,7 +20,7 @@ public interface ProyectoRepository extends JpaRepository<Proyecto, Long> {
   Optional<List<Proyecto>> findBySemestre(String semestre);
 
   // consultar un proyecto por materia
-  Optional<List<Proyecto>> findByMateria(String materia);
+  Optional<List<Proyecto>> findByMateria(Materia materia);
 
   Optional<Proyecto> findByTitulo(String titulo);
 

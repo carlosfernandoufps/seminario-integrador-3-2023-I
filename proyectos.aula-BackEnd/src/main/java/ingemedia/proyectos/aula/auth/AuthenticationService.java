@@ -35,7 +35,8 @@ public class AuthenticationService {
         .build();
     repository.save(user);
     // var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido());
+    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido(),
+        user.getCorreo());
     // saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
         .token(jwtToken)
@@ -60,7 +61,8 @@ public class AuthenticationService {
     System.out.println("user: " + user);
 
     // Usuario user = usuario.get();
-    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido());
+    var jwtToken = jwtService.generateToken(user, user.getCodigo(), user.getNombre(), user.getApellido(),
+        user.getCorreo());
     // revokeAllUserTokens(user);
     // saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()

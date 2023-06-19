@@ -70,6 +70,13 @@ public class Usuario implements UserDetails {
     this.password = integranteRequest.getPassword();
   }
 
+  public Usuario(String codigo, String nombre, String appellido, Rol rol) {
+    this.codigo = codigo;
+    this.nombre = nombre;
+    this.apellido = appellido;
+    this.rol = rol;
+  }
+
   // agregar proyectos
   public void addProyecto(IntegranteProyecto proyecto) {
     this.proyectos.add(proyecto);

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MateriaResponse {
+  private Long id;
   private String materia;
 
 }

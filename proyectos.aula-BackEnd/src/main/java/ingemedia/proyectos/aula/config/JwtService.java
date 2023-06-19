@@ -13,7 +13,9 @@ import java.util.Map;
 import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
 import ingemedia.proyectos.aula.request.Rol;
+import ingemedia.proyectos.aula.responses.UsuarioResponseJwt;
 
 @Service
 public class JwtService {
@@ -29,16 +31,20 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails, String codigo, String nombre, String apellido) {
+  public String generateToken(UserDetails userDetails, String codigo, String nombre, String apellido, String correo) {
     Map<String, Object> claims = new HashMap<>();
     System.out.println("info pal usuario " + userDetails);
     System.out.println("ROL? : " + userDetails.getAuthorities().stream().findFirst().get().getAuthority());
     System.out.println("Usuario? :" + userDetails.getClass().toString());
     claims.put("rol", userDetails.getAuthorities().stream().findFirst().get().getAuthority());
     // agregar el codigo de usuario al token
-    claims.put("codigo", codigo);
-    claims.put("nombre", nombre);
-    claims.put("apellido", apellido);
+    Rol rol = Rol.valueOf(userDetails.getAuthorities().stream().findFirst().get().getAuthority());
+    // claims.put("codigo", codigo);
+    // claims.put("nombre", nombre);
+    // claims.put("apellido", apellido);
+    System.out.println("CORREO: " + correo);
+    UsuarioResponseJwt user = new UsuarioResponseJwt(codigo, nombre, apellido, correo, rol);
+    claims.put("usuario", user);
     return generateToken(claims, userDetails);
   }
 
