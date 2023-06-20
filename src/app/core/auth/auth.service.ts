@@ -80,7 +80,7 @@ export class AuthService {
           this.token = this.jwtHelper.decodeToken(res.token)!;
           this._cookieService.set('access', res.token, new Date(this.token.exp * 1000), '/');
           this._cookieService.set('refresh', res.token, new Date(this.token.exp * 1000), '/');
-          this.setUser({ rol: this.token.rol, correo: this.token.sub } as User);
+          this.setUser(this.token.ususario);
           this.currentUserSubject.next(this.getUser());
         }),
         catchError(this.handleError)

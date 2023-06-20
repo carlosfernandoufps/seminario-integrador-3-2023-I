@@ -1,0 +1,79 @@
+{
+  "proyectos": [
+    {
+      "id": 1,
+      "titulo": "Egresados",
+      "fecha": [2023, 5, 23],
+      "materia": "Seminario Integrador III",
+      "semestre": "2023-1",
+      "descripcion": "Pagina para egresados",
+      "link": "https://github.com/carlosfernandoufps/seminario-integrador-3-2023-I",
+      "imagen": "https://economia3.com/wp-content/uploads/2022/11/business-team-connect-pieces-of-gears-teamwork-partnership-and-picture-id1203832818-1.jpg",
+      "integrantes": [
+        {
+          "id": 1
+        },
+        {
+          "id": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "titulo": "Aplicaciones Móviles",
+      "fecha": [2023, 4, 23],
+      "materia": "Programacion Web",
+      "semestre": "2023-1",
+      "descripcion": "Arregla tu teléfono",
+      "link": "https://github.com/carlosfernandoufps/seminario-integrador-3-2023-I",
+      "imagen": "https://img.freepik.com/vector-premium/planificacion-proyectos-diseno-plano-analisis-busqueda-desarrollo-web-plantilla-pantallas-presentacion-aplicacion-movil-ui-ilustraciones-moda-telefono-inteligente-3d_96365-168.jpg?w=2000",
+      "integrantes": [
+        {
+          "id": 3
+        }
+      ]
+    }
+  ],
+  "materias": [
+    {
+      "id": 1,
+      "nombre": "Programacion Web"
+    },
+    {
+      "id": 2,
+      "nombre": "Seminario Integrador III"
+    },
+    {
+      "id": 3,
+      "nombre": "Inteligencia Artificial"
+    },
+    {
+      "id": 4,
+      "nombre": "Analisis y Diseño de Sistemas"
+    },
+    {
+      "id": 5,
+      "nombre": "Bases de Datos"
+    },
+    {
+      "id": 6,
+      "nombre": "Informatica Educativa"
+    },
+    {
+      "id": 7,
+      "nombre": "Formulacion de Proyectos"
+    },
+    {
+      "id": 8,
+      "nombre": "Administracion de Proyectos"
+    },
+    {
+      "id": 9,
+      "nombre": "Seminario de Investigacion"
+    },
+    {
+      "id": 10,
+      "nombre": "Fisica"
+    }
+  ]
+}

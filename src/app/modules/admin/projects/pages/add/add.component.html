@@ -1,1 +1,170 @@
-<p>add works!</p>
+<div class="page-header">
+  <h4 class="page-title">Nuevo Projecto</h4>
+  <ul class="breadcrumbs">
+    <li class="nav-home">
+      <a href="#">
+        <i class="flaticon-home"></i>
+      </a>
+    </li>
+    <li class="separator">
+      <i class="flaticon-right-arrow"></i>
+    </li>
+    <li class="nav-item">
+      <a href="#">Projectos</a>
+    </li>
+    <li class="separator">
+      <i class="flaticon-right-arrow"></i>
+    </li>
+    <li class="nav-item">
+      <a href="#">Nuevo Projecto</a>
+    </li>
+  </ul>
+</div>
+<div class="row mx-5">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Nuevo Projecto</div>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" [formGroup]="newProject" (ngSubmit)="onSubmit()">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <div class="form-group input-file input-file-image text-center">
+                <img class="img-upload-preview" width="500" height="300" [src]="imageURL" alt="preview">
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="titulo">Titulo del Projecto
+                      <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                        title="Campo Obligatorio">*</span>
+                    </label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="titulo" formControlName="titulo"
+                        placeholder="Titulo del Projecto" aria-label="Titulo del Projecto">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                          title="Titulo del Projecto" data-original-title="Titulo del Projecto">
+                          <i class="fas fa-question-circle"></i>
+                        </span>
+                      </div>
+                    </div>
+                    <ng-container *ngFor="let validation of validationMessages['titulo']">
+                      <div *ngIf="f?.['titulo']?.hasError(validation.type) && isFieldValid('titulo')">
+                        <small class="text-danger">{{ validation.message }}</small>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="materia">Materia
+                      <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                        title="Campo Obligatorio">*</span>
+                    </label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                          title="Seleccione una Materia" data-original-title="Seleccione una Materia">
+                          <i class="fas fa-question-circle"></i>
+                        </span>
+                      </div>
+                      <select class="form-control" id="materia" formControlName="materia"
+                        (change)="changeSubject($event)">
+                        <option [value]="null" selected disabled hidden>Seleccione una Materia</option>
+                        <option [value]="c.id" *ngFor="let c of subjects">
+                          {{ c.nombre | titlecase }}
+                        </option>
+                      </select>
+                    </div>
+                    <ng-container *ngFor="let validation of validationMessages['materia']">
+                      <div *ngIf="f?.['materia']?.hasError(validation.type) && isFieldValid('materia')">
+                        <small class="text-danger">{{ validation.message }}</small>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="imagen">URL Imagen
+                      <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                        title="Campo Obligatorio">*</span>
+                    </label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                          title="Ej: https://google.com/image.png"
+                          data-original-title="Ej: https://google.com/image.png">
+                          <i class="fas fa-question-circle"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control" id="image" formControlName="imagen"
+                        (change)="showPreview($event)">
+                    </div>
+                    <ng-container *ngFor="let validation of validationMessages['imagen']">
+                      <div *ngIf="f?.['imagen']?.hasError(validation.type) && isFieldValid('imagen')">
+                        <small class="text-danger">{{ validation.message }}</small>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <div class="form-group">
+                    <label for="link">URL Repositorio
+                      <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                        title="Campo Obligatorio">*</span>
+                    </label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" data-placement="top"
+                          title="Ej: https://github.com/username/repository.git"
+                          data-original-title="Ej: https://github.com/username/repository.git">
+                          <i class="fas fa-question-circle"></i>
+                        </span>
+                      </div>
+                      <input type="text" class="form-control" id="link" formControlName="link"
+                        placeholder="URL Repositorio Publico" aria-label="URL Repositorio Publico">
+                    </div>
+                    <ng-container *ngFor="let validation of validationMessages['link']">
+                      <div *ngIf="f?.['link']?.hasError(validation.type) && isFieldValid('link')">
+                        <small class="text-danger">{{ validation.message }}</small>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="descripcion">Descripción
+                      <span class="text-danger" data-toggle="tooltip" data-placement="top"
+                        title="Campo Obligatorio">*</span>
+                    </label>
+                    <textarea class="form-control" id="descripcion" rows="5" formControlName="descripcion"
+                      placeholder="Descripción"></textarea>
+                    <span class="position_textarea" data-toggle="tooltip" data-placement="top"
+                      title="Ej: Descripción del proyecto" data-original-title="Ej: Descripción del proyecto">
+                      <i class="fas fa-question-circle"></i>
+                    </span>
+                    <ng-container *ngFor="let validation of validationMessages['descripcion']">
+                      <div *ngIf="f?.['descripcion']?.hasError(validation.type) && isFieldValid('descripcion')">
+                        <small class="text-danger">{{ validation.message }}</small>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-default" (click)="onBack()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

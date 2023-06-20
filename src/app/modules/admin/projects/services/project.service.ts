@@ -16,20 +16,23 @@ export class ProjectService {
     private http: HttpClient
   ) { }
 
-  private get currentValue(): number {
-    return Math.floor(Math.random() * 3) + 1;
+  public obtenerProyectos(): Observable<IProject[]> {
+    return this.http.get<IProject[]>(this.URL).pipe(
+      map((project: IProject[]) => {
+        return project.map((p: IProject) => {
+          p.fecha = new Date(p.fecha).toLocaleDateString('en-CA');
+          return p;
+        });
+      })
+    );
   }
 
-  public obtenerProyectos(): Observable<IProject[]> {
-    return this.http.get<IProject[]>(this.URL)
-      .pipe(
-        map((project: IProject[]) => {
-          return project.map((p: IProject) => {
-            p.imagen = `assets/img/tarjeta${this.currentValue}.jpg`;
-            return p;
-          });
-        })
-      );
+  public obtenerProyectoPorId(id: number): Observable<IProject> {
+    return this.http.get<IProject>(`${this.URL}/${id}`);
+  }
+
+  public crearProyecto(proyecto: IProject): Observable<IProject> {
+    return this.http.post<IProject>(this.URL, proyecto);
   }
 
 }
