@@ -1,6 +1,7 @@
 package ingemedia.proyectos.aula.auth;
 
 import ingemedia.proyectos.aula.config.JwtService;
+import ingemedia.proyectos.aula.request.IntegranteRequest;
 import ingemedia.proyectos.aula.request.Rol;
 //import com.example.parqueaderoapi.user.User;
 import ingemedia.proyectos.aula.entities.Usuario;
@@ -10,6 +11,8 @@ import ingemedia.proyectos.aula.repositories.UsuarioRepository;
 import ingemedia.proyectos.aula.responses.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,13 +28,30 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthenticationResponse register(IntegranteRequest request) {
+    Optional<Usuario> usuario = repository.findByCorreo(request.getCorreo());
+    Optional<Usuario> usuario2 = repository.findByCodigo(request.getCodigo());
+    if (usuario2.isPresent()) {
+      throw new BadRequestException(
+          ErrorResponse.builder()
+              // .codigo("400")
+              .message("El codigo ya esta registrado")
+              .build());
+    }
+    if (usuario.isPresent()) {
+      throw new BadRequestException(
+          ErrorResponse.builder()
+              // .codigo("400")
+              .message("El correo ya se encuentra registrado")
+              .build());
+    }
     var user = Usuario.builder()
+        .codigo(request.getCodigo())
         .nombre(request.getNombre())
         .apellido(request.getApellido())
         .correo(request.getCorreo())
         .password(passwordEncoder.encode(request.getPassword()))
-        .rol(Rol.ADMIN)
+        .rol(request.getRol())
         .build();
     repository.save(user);
     // var savedUser = repository.save(user);

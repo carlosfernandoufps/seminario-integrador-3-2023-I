@@ -39,6 +39,7 @@ public class SecurityConfiguration {
         .cors().and().csrf().disable()
         .authorizeHttpRequests()
         .requestMatchers("/api/v1/auth/authenticate").permitAll()
+        .requestMatchers("/api/v1/auth/register").permitAll()
         .requestMatchers("/openapi/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
         .requestMatchers(HttpMethod.PUT, "/api/v1/**").hasAnyAuthority("ADMIN", "ESTUDIANTE", "DOCENTE")
