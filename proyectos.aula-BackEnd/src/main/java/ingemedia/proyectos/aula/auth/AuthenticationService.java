@@ -29,6 +29,14 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(IntegranteRequest request) {
+
+    if (request.getRol() == Rol.ADMIN) {
+      throw new BadRequestException(
+          ErrorResponse.builder()
+              // .codigo("400")
+              .message("No se puede Registrar un Admin")
+              .build());
+    }
     Optional<Usuario> usuario = repository.findByCorreo(request.getCorreo());
     Optional<Usuario> usuario2 = repository.findByCodigo(request.getCodigo());
     if (usuario2.isPresent()) {
