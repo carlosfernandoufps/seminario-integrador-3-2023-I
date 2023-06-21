@@ -9,7 +9,7 @@ import { IProject } from '@data/interfaces/http/project.interface';
 })
 export class CardComponent {
 
-  @Input() project: IProject = {} as IProject;
+  @Input() data: any = {};
 
   constructor() { }
 

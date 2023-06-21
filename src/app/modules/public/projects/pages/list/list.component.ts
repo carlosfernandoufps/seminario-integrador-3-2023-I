@@ -26,7 +26,6 @@ export class ListComponent implements OnInit {
   private obtenerProyectos() {
     this.projectService.obtenerProyectos().subscribe((data: IProject[]) => {
       this.listaProyectos = data;
-      console.log(this.listaProyectos);
       this.CopylistaProyectos = data;
       this.getDateMinAndMax();
     });

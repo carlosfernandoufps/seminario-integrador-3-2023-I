@@ -11,7 +11,7 @@ import { ProjectService } from '@modules/public/projects/services/project.servic
 })
 export class DetailComponent implements OnInit {
 
-  public project: IProject = {} as IProject;
+  public data: any = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -26,8 +26,8 @@ export class DetailComponent implements OnInit {
 
   private obtenerProyecto(id: number) {
     this.projectService.obtenerProyectoPorId(id)
-      .subscribe((data: IProject) => {
-        this.project = data;
+      .subscribe((data: any) => {
+        this.data = data;
       });
   }
 

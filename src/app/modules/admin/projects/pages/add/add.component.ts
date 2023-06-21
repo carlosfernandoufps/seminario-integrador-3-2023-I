@@ -68,13 +68,6 @@ export class AddComponent implements OnInit {
       });
   }
 
-  public changeSubject(event: Event): void {
-    const idSubject = (event.target as HTMLInputElement).value;
-    if (idSubject) {
-      console.log(idSubject);
-    }
-  }
-
   private getObtenerPeriodoSemestre(): string {
     const date = new Date();
     const month = date.getMonth() + 1;
@@ -94,17 +87,21 @@ export class AddComponent implements OnInit {
     }
 
     const project = {
-      titulo: this.f['titulo'].value,
+      titulo: this.f['titulo'].value.trim(),
       fecha: new Date().toLocaleDateString('en-CA'),
       idMateria: this.f['materia'].value,
       semestre: this.getObtenerPeriodoSemestre(),
-      descripcion: this.f['descripcion'].value,
-      link: this.f['link'].value,
-      imagen: this.f['imagen'].value,
-      integrantes: [this.currentUser.codigo]
+      descripcion: this.f['descripcion'].value.trim(),
+      link: this.f['link'].value.trim(),
+      imagen: this.f['imagen'].value.trim(),
+      codigosIntegrantes: [this.currentUser.codigo]
     };
 
-    console.log(project);
+    this.projectService
+      .crearProyecto(project)
+      .subscribe(() => {
+        this.router.navigate(['/admin/projects/my-projects']);
+      });
   }
 
 }

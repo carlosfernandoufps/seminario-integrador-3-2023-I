@@ -8,7 +8,7 @@ export const MENU_ITEMS: ISidebar[] = [
       {
         title: "Perfil",
         icon: "fas fa-user",
-        link: "/profile",
+        link: "/admin/account/profile",
         expanded: false,
       },
     ],
@@ -19,20 +19,17 @@ export const MENU_ITEMS: ISidebar[] = [
       {
         title: 'Proyectos',
         icon: 'fas fa-file-signature',
-        link: '/projects',
         expanded: true,
         children: [
           {
             title: 'Mis proyectos',
-            icon: 'fas fa-file-signature',
-            link: '/projects/my-projects',
+            link: '/admin/projects/my-projects',
             expanded: false,
             roles: [ROLE.STUDENT, ROLE.TEACHER, ROLE.ADMIN]
           },
           {
             title: 'Crear proyecto',
-            icon: 'fas fa-file-signature',
-            link: '/projects/create-project',
+            link: '/admin/projects/create-project',
             expanded: false,
             roles: [ROLE.STUDENT, ROLE.TEACHER, ROLE.ADMIN]
           }

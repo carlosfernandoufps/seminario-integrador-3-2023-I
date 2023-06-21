@@ -1,15 +1,15 @@
 <div class="card">
   <div class="p-2">
-    <a class="text-dark" [routerLink]="['/public/projects/detail/', project.id]">
-      <img class="card-img-top rounded img-project" [src]="project.imagen" [alt]="project.titulo">
+    <a class="text-dark" [routerLink]="['/public/projects/detail/', data.proyecto.id]">
+      <img class="card-img-top rounded img-project" [src]="data.proyecto.imagen" [alt]="data.proyecto.titulo">
     </a>
   </div>
   <div class="card-body pt-2">
-    <a class="text-dark" [routerLink]="['/public/projects/detail/', project.id]">
-      <h4 class="fw-bold mb-2">{{ project.titulo }}</h4>
+    <a class="text-dark" [routerLink]="['/public/projects/detail/', data.proyecto.id]">
+      <h4 class="fw-bold mb-2">{{ data.proyecto.titulo }}</h4>
     </a>
-    <p class="card-text mb-2">{{ project.descripcion }}</p>
-    <p class="text-muted small mb-2">{{ project.fecha | date: 'fullDate' }}</p>
+    <p class="card-text mb-2"> {{ data.proyecto.descripcion | truncateText:50 }}</p>
+    <p class="text-muted small mb-2">{{ data.proyecto.fecha | date: 'fullDate' }}</p>
     <div class="avatar-group mb-2">
       <div class="avatar avatar-sm">
         <img src="assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle border border-white">
@@ -29,6 +29,6 @@
     </div>
   </div>
   <div class="card-footer">
-    <a class="btn btn-danger" [routerLink]="['/public/projects/detail/', project.id]">Conoce más &raquo;</a>
+    <a class="btn btn-danger" [routerLink]="['/public/projects/detail/', data.proyecto.id]">Conoce más &raquo;</a>
   </div>
 </div>

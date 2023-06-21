@@ -19,14 +19,14 @@ const PROJECTS_ROUTES: Routes = [
         component: ListComponent,
         pathMatch: 'full',
         title: 'List of Projects',
-        //canActivate: [RoleGuard],
+        canActivate: [RoleGuard],
         data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {
         path: 'create-project',
         component: AddComponent,
         title: 'New Project',
-        //canActivate: [RoleGuard],
+        canActivate: [RoleGuard],
         data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {

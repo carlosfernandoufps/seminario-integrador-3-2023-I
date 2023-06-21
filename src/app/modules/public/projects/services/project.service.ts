@@ -17,9 +17,9 @@ export class ProjectService {
 
   public obtenerProyectos(): Observable<IProject[]> {
     return this.http.get<IProject[]>(this.URL).pipe(
-      map((project: IProject[]) => {
-        return project.map((p: IProject) => {
-          p.fecha = new Date(p.fecha).toLocaleDateString('en-CA');
+      map((project: any[]) => {
+        return project.map((p: any) => {
+          p.fecha = new Date(p.proyecto.fecha).toLocaleDateString('en-CA');
           return p;
         });
       })

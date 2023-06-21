@@ -1,1 +1,40 @@
-<p>detail works!</p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">{{ data.proyecto.titulo }}</div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img class="img-fluid rounded img-project" [src]="data.proyecto.imagen" [alt]="data.proyecto.titulo">
+          </div>
+          <div class="col-md-8">
+            <p class="card-text mb-2" align="justify">
+              {{ data.proyecto.descripcion }}
+            </p>
+            <p class="text-muted small mb-2">{{ data.proyecto.fecha | date: 'fullDate' }}</p>
+            <div class="avatar-group mb-2">
+              <div class="avatar avatar-sm">
+                <img src="assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+              </div>
+              <div class="avatar avatar-sm">
+                <img src="assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+              </div>
+              <div class="avatar avatar-sm">
+                <img src="assets/img/mlane.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+              </div>
+              <div class="avatar avatar-sm">
+                <img src="assets/img/talha.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+              </div>
+              <div class="avatar avatar-sm">
+                <span class="avatar-title rounded-circle border border-white bg-success">+</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

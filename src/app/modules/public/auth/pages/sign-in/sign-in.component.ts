@@ -25,4 +25,13 @@ export class SignInComponent {
       });
   }
 
+  public showPassword() {
+    const password = document.getElementById('password') as HTMLInputElement;
+    if (password.getAttribute('type') === 'password') {
+      password.setAttribute('type', 'text');
+    } else {
+      password.setAttribute('type', 'password');
+    }
+  }
+
 }
