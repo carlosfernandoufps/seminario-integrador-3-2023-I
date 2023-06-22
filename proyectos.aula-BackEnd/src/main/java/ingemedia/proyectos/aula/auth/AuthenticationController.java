@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ingemedia.proyectos.aula.request.IntegranteRequest;
+import ingemedia.proyectos.aula.responses.MensajeResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,6 +32,13 @@ public class AuthenticationController {
     System.out.println("Aca llega");
     service.logout(request);
     return ResponseEntity.ok("Sesión cerrada exitosamente");
+  }
+
+  @PostMapping("/register")
+  public ResponseEntity<AuthenticationResponse> register(
+      @RequestBody @Valid IntegranteRequest request) {
+    return ResponseEntity.ok(service.register(request));
+
   }
 
 }
