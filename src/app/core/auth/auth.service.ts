@@ -22,7 +22,6 @@ import { IUser } from '@app/data/interfaces/http/user.interface';
 export class AuthService {
 
   private readonly url = `${environment.baseUrlAuth}`;
-  private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${this.accessToken}` });
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
   private jwtHelper: JwtHelperService;
@@ -91,10 +90,8 @@ export class AuthService {
   }
 
   public signUp(data: IUser): Observable<ITokenDto> {
-    const user: IUserDto = { correo: 'admin@mail.com', password: 'admin' } as IUserDto;
-    this.signIn(user).subscribe();
     data.rol = ROLE.STUDENT;
-    return this.http.post<ITokenDto>(`${environment.baseUrlMembers}`, data, { headers: this.headers })
+    return this.http.post<ITokenDto>(`${environment.baseUrlMembers}`, JSON.stringify(data));
   }
 
   public loginWithRefreshToken(): Observable<ITokenDto> {

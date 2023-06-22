@@ -4,12 +4,6 @@
 
 const SERVER = {
   protocol: 'http',
-  hostname: 'localhost',
-  port: 3000,
-};
-
-const SERVER_PROD = {
-  protocol: 'http',
   hostname: '3.15.147.189',
   port: 8090,
 };
@@ -18,10 +12,10 @@ export const environment = {
   production: false,
   encrypt: true,
   keyEcrypt: 'Fr0nT3nD2023',
-  baseUrlAuth: `${SERVER_PROD.protocol}://${SERVER_PROD.hostname}:${SERVER_PROD.port}/api/v1/auth`,
-  baseUrlProjects: `${SERVER_PROD.protocol}://${SERVER_PROD.hostname}:${SERVER_PROD.port}/api/v1/proyectos`,
-  baseUrlMembers: `${SERVER_PROD.protocol}://${SERVER_PROD.hostname}:${SERVER_PROD.port}/api/v1/integrantes`,
-  baseUrlSubjects: `${SERVER_PROD.protocol}://${SERVER_PROD.hostname}:${SERVER_PROD.port}/api/v1/materias`,
+  baseUrlAuth: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/auth`,
+  baseUrlProjects: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/proyectos`,
+  baseUrlMembers: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/integrantes`,
+  baseUrlSubjects: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/materias`,
 };
 
 /*

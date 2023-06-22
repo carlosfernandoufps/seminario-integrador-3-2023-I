@@ -19,10 +19,10 @@ export class HttpTokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next
       .handle(this.performRequest(request))
-      .pipe(
-        catchError((error: HttpErrorResponse) => this.processRequestError(error, request, next)),
-        finalize(() => this.processRequestFinally())
-      );
+    /*.pipe(
+      catchError((error: HttpErrorResponse) => this.processRequestError(error, request, next)),
+      finalize(() => this.processRequestFinally())
+    );*/
   }
 
   private performRequest(request: HttpRequest<any>): HttpRequest<any> {

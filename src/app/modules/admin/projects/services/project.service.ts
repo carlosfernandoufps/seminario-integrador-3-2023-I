@@ -34,7 +34,11 @@ export class ProjectService {
   }
 
   public crearProyecto(proyecto: any): Observable<any> {
-    return this.http.post<any>(this.URL, proyecto);
+    return this.http.post<any>(this.URL, JSON.stringify(proyecto));
+  }
+
+  public agregarIntegrante(codigoIntegrante: string, idProyecto: string): Observable<any> {
+    return this.http.put<any>(`${this.URL}/integrante/${codigoIntegrante}/proyecto/${idProyecto}`, {});
   }
 
 }

@@ -99,7 +99,8 @@ export class AddComponent implements OnInit {
 
     this.projectService
       .crearProyecto(project)
-      .subscribe(() => {
+      .subscribe((response: any) => {
+        console.log(response);
         this.router.navigate(['/admin/projects/my-projects']);
       });
   }

@@ -31,4 +31,28 @@ export class DetailComponent implements OnInit {
       });
   }
 
+  public agregarIntegrante() {
+    const codigoIntegrante = (document.getElementById('codigoIntegrante') as HTMLInputElement).value;
+    const idProyecto = this.data.proyecto.id;
+    this.projectService
+      .agregarIntegrante(codigoIntegrante, idProyecto)
+      .subscribe((data: any) => {
+        this.obtenerProyecto(idProyecto);
+      });
+    this.cerrarModal();
+  }
+
+  private cerrarModal() {
+    const modal = document.getElementById('modalAgregarIntegrante') as HTMLElement;
+    const modalBackdrop = document.getElementsByClassName('modal-backdrop')[0] as HTMLElement;
+    modalBackdrop.classList.remove('show');
+    modalBackdrop.style.display = 'none';
+    modal.classList.remove('show');
+    modal.style.display = 'none';
+  }
+
+  public isEmpty(): boolean {
+    return !(Object.entries(this.data).length === 0);
+  }
+
 }
