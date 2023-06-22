@@ -1,6 +1,6 @@
+import { IUser } from '../user.interface';
 export interface IAccessTokenDto {
   exp: number;
   iat: number;
-  rol: string;
-  sub: string
+  usuario: IUser;
 }

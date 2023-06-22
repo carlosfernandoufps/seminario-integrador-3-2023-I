@@ -1,1 +1,86 @@
-<p>detail works!</p>
+<ng-container *ngIf="isEmpty()">
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalAgregarIntegrante" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header no-bd">
+          <h5 class="modal-title">
+            Nuevo Integrante
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="small">Ingrese el Código del Integrante</p>
+          <form>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group form-group-default">
+                  <label>ID Proyecto</label>
+                  <input type="text" class="form-control" readonly="readonly" value="{{ data.proyecto.id }}">
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group form-group-default">
+                  <label>Código</label>
+                  <input id="codigoIntegrante" type="text" class="form-control" placeholder="Código">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer no-bd">
+          <button type="button" id="addRowButton" class="btn btn-primary" (click)="agregarIntegrante()">Agregar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="d-flex card-header">
+          <div class="card-title">{{ data.proyecto.titulo }}</div>
+          <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#modalAgregarIntegrante">
+            <i class="fa fa-plus"></i>
+            Agregar Integrante
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <img class="img-fluid rounded img-project" [src]="data.proyecto.imagen" [alt]="data.proyecto.titulo">
+            </div>
+            <div class="col-md-8">
+              <p class="card-text mb-2" align="justify">
+                {{ data.proyecto.descripcion }}
+              </p>
+              <p class="text-muted small mb-2">{{ data.proyecto.fecha | date: 'fullDate' }}</p>
+              <div class="avatar-group mb-2">
+                <div class="avatar avatar-sm">
+                  <img src="assets/img/jm_denis.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+                </div>
+                <div class="avatar avatar-sm">
+                  <img src="assets/img/chadengle.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+                </div>
+                <div class="avatar avatar-sm">
+                  <img src="assets/img/mlane.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+                </div>
+                <div class="avatar avatar-sm">
+                  <img src="assets/img/talha.jpg" alt="..." class="avatar-img rounded-circle border border-white">
+                </div>
+                <div class="avatar avatar-sm">
+                  <span class="avatar-title rounded-circle border border-white bg-success">+</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

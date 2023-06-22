@@ -14,7 +14,7 @@ export class ListComponent implements OnInit {
   CopylistaProyectos: IProject[] = [];
   Resultado: IProject[] = [];
 
-  fecha: any = { min: null, max: null, current: null };
+  fecha: any = { min: null, max: null, currentStart: null, currentEnd: null };
   search: any = { subjects: true, semester: true, date: true };
 
   constructor(private projectService: ProjectService) { }
@@ -24,13 +24,11 @@ export class ListComponent implements OnInit {
   }
 
   private obtenerProyectos() {
-    this.projectService
-      .obtenerProyectos()
-      .subscribe((data: IProject[]) => {
-        this.listaProyectos = data;
-        this.CopylistaProyectos = data;
-        this.getDateMinAndMax();
-      });
+    this.projectService.obtenerProyectos().subscribe((data: IProject[]) => {
+      this.listaProyectos = data;
+      this.CopylistaProyectos = data;
+      this.getDateMinAndMax();
+    });
   }
 
   private getDateMinAndMax() {
@@ -49,17 +47,6 @@ export class ListComponent implements OnInit {
         if (this.search.subjects) {
           this.Resultado.push(...data);
           this.search.subjects = false;
-        }
-      });
-  }
-
-  private filterBySemester(semestre: string): void {
-    this.projectService
-      .obtenerProyectosPorSemestre(semestre)
-      .subscribe((data: IProject[]) => {
-        if (this.search.semester) {
-          this.Resultado.push(...data);
-          this.search.semester = false;
         }
       });
   }
@@ -84,4 +71,5 @@ export class ListComponent implements OnInit {
   public onClear() {
     this.listaProyectos = this.CopylistaProyectos;
   }
+
 }

@@ -19,9 +19,15 @@ export class SignUpComponent {
   ) { }
 
   public onSignUp() {
-    this.authService.signUp(this.user)
+    const user = { correo: 'admin@mail.com', password: 'admin' };
+    this.authService
+      .signIn(user)
       .subscribe(() => {
-        this.router.navigate(['public/auth/sign-in']);
+        this.authService
+          .signUp(this.user)
+          .subscribe(() => {
+            this.router.navigate(['/auth/sign-in']);
+          });
       });
   }
 

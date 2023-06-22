@@ -15,7 +15,7 @@ const PROJECTS_ROUTES: Routes = [
     component: AdminLayoutComponent,
     children: [
       {
-        path: '',
+        path: 'my-projects',
         component: ListComponent,
         pathMatch: 'full',
         title: 'List of Projects',
@@ -23,19 +23,21 @@ const PROJECTS_ROUTES: Routes = [
         data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {
-        path: 'new',
+        path: 'create-project',
         component: AddComponent,
         title: 'New Project',
         canActivate: [RoleGuard],
         data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
       {
-        path: ':id',
+        path: 'detail-project/:id',
         component: DetailComponent,
         title: 'Detail of Project',
-        canActivate: [RoleGuard],
+        //canActivate: [RoleGuard],
         data: { roles: [ROLE.ADMIN, ROLE.TEACHER, ROLE.STUDENT] }
       },
+      { path: '', redirectTo: 'my-projects', pathMatch: 'full' },
+      { path: '**', redirectTo: 'my-projects' },
     ]
   }
 ];

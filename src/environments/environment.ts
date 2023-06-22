@@ -15,6 +15,7 @@ export const environment = {
   baseUrlAuth: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/auth`,
   baseUrlProjects: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/proyectos`,
   baseUrlMembers: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/integrantes`,
+  baseUrlSubjects: `${SERVER.protocol}://${SERVER.hostname}:${SERVER.port}/api/v1/materias`,
 };
 
 /*

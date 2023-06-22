@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
+import { SharedModule } from '@shared/shared.module';
 import { ListComponent } from './pages/list/list.component';
 import { DetailComponent } from './pages/detail/detail.component';
 import { CardComponent } from './components/card/card.component';
@@ -17,7 +18,11 @@ import { CardComponent } from './components/card/card.component';
   imports: [
     CommonModule,
     FormsModule,
-    ProjectsRoutingModule
+    ProjectsRoutingModule,
+    SharedModule
+  ],
+  exports: [
+    ListComponent
   ]
 })
 export class ProjectsModule { }

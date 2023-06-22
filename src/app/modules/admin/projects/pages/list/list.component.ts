@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthService } from '@core/auth/auth.service';
 import { ProjectService } from '@modules/admin/projects/services/project.service';
 import { IProject } from '@data/interfaces/http/project.interface';
 
@@ -10,9 +11,10 @@ import { IProject } from '@data/interfaces/http/project.interface';
 })
 export class ListComponent implements OnInit {
 
-  listaProyectos: IProject[] = [];
+  listaProyectos: any[] = [];
 
   constructor(
+    private authService: AuthService,
     private projectService: ProjectService
   ) { }
 
@@ -21,10 +23,12 @@ export class ListComponent implements OnInit {
   }
 
   private obtenerProyectos() {
+    const code = this.authService.codigoUsuario;
     this.projectService
-      .obtenerProyectos()
-      .subscribe((data: IProject[]) => {
+      .obtenerProyectosPorUsuario(code)
+      .subscribe((data: any[]) => {
         this.listaProyectos = data;
       });
   }
+
 }
